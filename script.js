@@ -1,468 +1,566 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Dữ liệu sản phẩm
-    const products = {
-        iphone15: { name: 'iPhone 15 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Apple', description: 'iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.', imgClass: 'iphone' },
-        samsung24: { name: 'Samsung Galaxy S24 Ultra', price: 33590000, category: 'Điện thoại thông minh', brand: 'Samsung', description: 'Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.', imgClass: 'samsung' },
-        pixel8: { name: 'Google Pixel 8 Pro', price: 25190000, category: 'Điện thoại thông minh', brand: 'Google', description: 'Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.', imgClass: 'pixel' },
-        oneplus12: { name: 'OnePlus 12', price: 25190000, category: 'Điện thoại thông minh', brand: 'OnePlus', description: 'Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.', imgClass: 'oneplus' },
-        xiaomi14: { name: 'Xiaomi 14 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Xiaomi', description: 'HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.', imgClass: 'xiaomi' },
-        macbookm3: { name: 'MacBook Pro M3', price: 55990000, category: 'Máy tính xách tay', brand: 'Apple', description: 'Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.', imgClass: 'macbook' },
-        dellxps13: { name: 'Dell XPS 13', price: 36390000, category: 'Máy tính xách tay', brand: 'Dell', description: 'Laptop siêu di động với màn hình InfinityEdge và bộ vi xử lý Intel mạnh mẽ.', imgClass: 'dell' },
-        asusrog: { name: 'ASUS ROG Gaming Laptop', price: 50390000, category: 'Máy tính xách tay', brand: 'ASUS', description: 'Laptop chơi game hiệu năng cao với đồ họa RTX 4070 và màn hình 144Hz.', imgClass: 'asus' },
-        lenovo12: { name: 'Lenovo ThinkPad X1 Carbon Gen 12', price: 41990000, category: 'Máy tính xách tay', brand: 'Lenovo', description: 'Laptop doanh nhân nhẹ với Intel Ultra 9 và màn hình OLED 2.8K.', imgClass: 'lenovo' },
-        hpspectre: { name: 'HP Spectre x360 14', price: 44790000, category: 'Máy tính xách tay', brand: 'HP', description: 'Laptop chuyển đổi với Intel thế hệ 13, màn hình OLED 3:2, hỗ trợ bút.', imgClass: 'hp' },
-        sonywh: { name: 'Sony WH-1000XM5', price: 11190000, category: 'Âm thanh', brand: 'Sony', description: 'Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.', imgClass: 'sony' },
-        airpods: { name: 'AirPods Pro', price: 6990000, category: 'Âm thanh', brand: 'Apple', description: 'Âm thanh không gian cá nhân hóa, theo dõi chuyển động đầu, chế độ xuyên âm.', imgClass: 'airpods' },
-        homepod: { name: 'HomePod mini', price: 2790000, category: 'Âm thanh', brand: 'Apple', description: 'Loa thông minh nhỏ gọn với âm thanh đầy phòng và trí thông minh Siri.', imgClass: 'homepod' },
-        boseultra: { name: 'Bose QuietComfort Ultra', price: 9790000, category: 'Âm thanh', brand: 'Bose', description: 'Tai nghe nhét tai khử tiếng ồn cao cấp với âm thanh sống động.', imgClass: 'bose' },
-        jblboombox: { name: 'JBL Boombox 3', price: 13990000, category: 'Âm thanh', brand: 'JBL', description: 'Loa di động mạnh mẽ với âm trầm sâu và pin 24 giờ.', imgClass: 'jbl' },
-        razerblade: { name: 'Razer Blade 16', price: 75590000, category: 'Chơi game', brand: 'Razer', description: 'Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.', imgClass: 'razer' },
-        applewatch: { name: 'Apple Watch Ultra 2', price: 22390000, category: 'Phụ kiện', brand: 'Apple', description: 'Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.', imgClass: 'applewatch' }
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDUMMY_KEY", // Thay bằng Firebase API Key của bạn
+    authDomain: "hot-gadgets-dummy.firebaseapp.com",
+    projectId: "hot-gadgets-dummy",
+    storageBucket: "hot-gadgets-dummy.appspot.com",
+    messagingSenderId: "DUMMY_SENDER_ID",
+    appId: "DUMMY_APP_ID"
+};
 
-    // Trạng thái
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-    let compareList = JSON.parse(localStorage.getItem('compareList')) || [];
-    let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
-    // Phần tử DOM
-    const cartModal = document.querySelector('.cart-modal');
-    const wishlistModal = document.querySelector('.wishlist-modal');
-    const authModal = document.querySelector('.auth-modal');
-    const quickViewModal = document.querySelector('.quick-view-modal');
-    const compareModal = document.querySelector('.compare-modal');
-    const checkoutModal = document.querySelector('.checkout-modal');
-    const ratingModal = document.querySelector('.rating-modal');
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+let compare = JSON.parse(localStorage.getItem('compare')) || [];
+let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+const products = {
+    iphone15: {
+        id: 'iphone15', name: 'iPhone 15 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Apple',
+        description: 'iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.',
+        specs: { RAM: '8GB', Storage: '256GB', Screen: '6.1" Super Retina XDR' }, imgSrc: 'https://images.unsplash.com/photo-1592899677971-0b06e0a6d2b1?auto=format&fit=crop&w=800&q=80',
+        stock: 10
+    },
+    samsung24: {
+        id: 'samsung24', name: 'Samsung Galaxy S24 Ultra', price: 33590000, category: 'Điện thoại thông minh', brand: 'Samsung',
+        description: 'Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.',
+        specs: { RAM: '12GB', Storage: '512GB', Screen: '6.8" Dynamic AMOLED 2X' }, imgSrc: 'https://images.unsplash.com/photo-1610945265064-0e34e40d7bc3?auto=format&fit=crop&w=800&q=80',
+        stock: 15
+    },
+    pixel8: {
+        id: 'pixel8', name: 'Google Pixel 8 Pro', price: 25190000, category: 'Điện thoại thông minh', brand: 'Google',
+        description: 'Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.',
+        specs: { RAM: '12GB', Storage: '256GB', Screen: '6.7" OLED' }, imgSrc: 'https://images.unsplash.com/photo-1604315653088-6c0e86f3f3a7?auto=format&fit=crop&w=800&q=80',
+        stock: 8
+    },
+    oneplus12: {
+        id: 'oneplus12', name: 'OnePlus 12', price: 25190000, category: 'Điện thoại thông minh', brand: 'OnePlus',
+        description: 'Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.',
+        specs: { RAM: '16GB', Storage: '512GB', Screen: '6.82" AMOLED' }, imgSrc: 'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=format&fit=crop&w=800&q=80',
+        stock: 12
+    },
+    xiaomi14: {
+        id: 'xiaomi14', name: 'Xiaomi 14 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Xiaomi',
+        description: 'HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.',
+        specs: { RAM: '12GB', Storage: '256GB', Screen: '6.73" AMOLED' }, imgSrc: 'https://images.pexels.com/photos/7743467/pexels-photo-7743467.jpeg?auto=format&fit=crop&w=800&q=80',
+        stock: 0
+    },
+    macbookm3: {
+        id: 'macbookm3', name: 'MacBook Pro M3', price: 55990000, category: 'Máy tính xách tay', brand: 'Apple',
+        description: 'Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.',
+        specs: { RAM: '16GB', Storage: '1TB', Screen: '14" Liquid Retina XDR' }, imgSrc: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80',
+        stock: 5
+    },
+    dellxps13: {
+        id: 'dellxps13', name: 'Dell XPS 13', price: 36390000, category: 'Máy tính xách tay', brand: 'Dell',
+        description: 'Laptop siêu di động với màn hình InfinityEdge và bộ vi xử lý Intel mạnh mẽ.',
+        specs: { RAM: '16GB', Storage: '512GB', Screen: '13.4" OLED' }, imgSrc: 'https://images.unsplash.com/photo-1611078489935-0cb7bf04a5b8?auto=format&fit=crop&w=800&q=80',
+        stock: 7
+    },
+    asusrog: {
+        id: 'asusrog', name: 'ASUS ROG Gaming Laptop', price: 50390000, category: 'Máy tính xách tay', brand: 'ASUS',
+        description: 'Laptop chơi game hiệu năng cao với đồ họa RTX 4070 và màn hình 144Hz.',
+        specs: { RAM: '32GB', Storage: '1TB', Screen: '16" QHD+' }, imgSrc: 'https://images.unsplash.com/photo-1629131726692-1ae78a5c6336?auto=format&fit=crop&w=800&q=80',
+        stock: 4
+    },
+    lenovo12: {
+        id: 'lenovo12', name: 'Lenovo ThinkPad X1 Carbon Gen 12', price: 41990000, category: 'Máy tính xách tay', brand: 'Lenovo',
+        description: 'Laptop doanh nhân nhẹ với Intel Ultra 9 và màn hình OLED 2.8K.',
+        specs: { RAM: '32GB', Storage: '1TB', Screen: '14" OLED' }, imgSrc: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80',
+        stock: 6
+    },
+    hpspectre: {
+        id: 'hpspectre', name: 'HP Spectre x360 14', price: 44790000, category: 'Máy tính xách tay', brand: 'HP',
+        description: 'Laptop chuyển đổi với Intel thế hệ 13, màn hình OLED 3:2, hỗ trợ bút.',
+        specs: { RAM: '16GB', Storage: '1TB', Screen: '13.5" OLED' }, imgSrc: 'https://images.unsplash.com/photo-1611078489935-0cb7bf04a5b8?auto=format&fit=crop&w=800&q=80',
+        stock: 3
+    },
+    sonywh: {
+        id: 'sonywh', name: 'Sony WH-1000XM5', price: 11190000, category: 'Âm thanh', brand: 'Sony',
+        description: 'Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.',
+        specs: { Battery: '30 giờ', NoiseCancel: 'Có', Type: 'Over-ear' }, imgSrc: 'https://images.unsplash.com/photo-1594631252845-4e8f67f64b4a?auto=format&fit=crop&w=800&q=80',
+        stock: 20
+    },
+    airpods: {
+        id: 'airpods', name: 'AirPods Pro', price: 6990000, category: 'Âm thanh', brand: 'Apple',
+        description: 'Âm thanh không gian cá nhân hóa, theo dõi chuyển động đầu, chế độ xuyên âm.',
+        specs: { Battery: '6 giờ', NoiseCancel: 'Có', Type: 'In-ear' }, imgSrc: 'https://images.unsplash.com/photo-1606220838315-7b7b2b1860cd?auto=format&fit=crop&w=800&q=80',
+        stock: 25
+    },
+    homepod: {
+        id: 'homepod', name: 'HomePod mini', price: 2790000, category: 'Âm thanh', brand: 'Apple',
+        description: 'Loa thông minh nhỏ gọn với âm thanh đầy phòng và trí thông minh Siri.',
+        specs: { Connectivity: 'Wi-Fi, Bluetooth', Assistant: 'Siri' }, imgSrc: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+        stock: 30
+    },
+    boseultra: {
+        id: 'boseultra', name: 'Bose QuietComfort Ultra', price: 9790000, category: 'Âm thanh', brand: 'Bose',
+        description: 'Tai nghe nhét tai khử tiếng ồn cao cấp với âm thanh sống động.',
+        specs: { Battery: '6 giờ', NoiseCancel: 'Có', Type: 'In-ear' }, imgSrc: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+        stock: 18
+    },
+    jblboombox: {
+        id: 'jblboombox', name: 'JBL Boombox 3', price: 13990000, category: 'Âm thanh', brand: 'JBL',
+        description: 'Loa di động mạnh mẽ với âm trầm sâu và pin 24 giờ.',
+        specs: { Battery: '24 giờ', Waterproof: 'IP67' }, imgSrc: 'https://images.unsplash.com/photo-1589003073299-cbe2d5410f81?auto=format&fit=crop&w=800&q=80',
+        stock: 10
+    },
+    razerblade: {
+        id: 'razerblade', name: 'Razer Blade 16', price: 75590000, category: 'Chơi game', brand: 'Razer',
+        description: 'Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.',
+        specs: { RAM: '32GB', Storage: '2TB', Screen: '16" Mini-LED' }, imgSrc: 'https://images.pexels.com/photos/614484/pexels-photo-614484.jpeg?auto=format&fit=crop&w=800&q=80',
+        stock: 2
+    },
+    applewatch: {
+        id: 'applewatch', name: 'Apple Watch Ultra 2', price: 22390000, category: 'Phụ kiện', brand: 'Apple',
+        description: 'Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.',
+        specs: { Battery: '36 giờ', Waterproof: '100m' }, imgSrc: 'https://images.unsplash.com/photo-1553546072-7be3a7e78371?auto=format&fit=crop&w=800&q=80',
+        stock: 15
+    }
+};
+
+function saveToLocalStorage(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        showToast('Lỗi lưu trữ dữ liệu!', 'error');
+    }
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        position: 'top-right',
+        backgroundColor: type === 'success' ? '#38a169' : '#e53e3e'
+    }).showToast();
+}
+
+function formatPrice(price) {
+    return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+}
+
+function updateCartCount() {
     const cartCount = document.querySelector('.cart-count');
-    const cartContent = document.querySelector('.cart-modal .cart-content');
-    const cartTotal = document.querySelector('.cart-modal .cart-total');
-    const wishlistContent = document.querySelector('.wishlist-modal .wishlist-content');
-    const quickViewContent = document.querySelector('.quick-view-modal .quick-view-content');
-    const compareContent = document.querySelector('.compare-modal .compare-content');
-    const closeModals = document.querySelectorAll('.modal .close');
-    const checkoutBtn = document.querySelector('.checkout');
-    const clearCartBtn = document.querySelector('.clear-cart');
-    const clearWishlistBtn = document.querySelector('.clear-wishlist');
-    const clearCompareBtn = document.querySelector('.clear-compare');
-    const signInBtn = document.querySelector('.sign-in');
-    const wishlistBtn = document.querySelector('.wishlist');
-    const authTabs = document.querySelectorAll('.auth-tabs .tab');
-    const authForms = document.querySelectorAll('.auth-form');
-    const newsletterForm = document.getElementById('newsletter-form');
-    const signInForm = document.getElementById('signin-form');
-    const signUpForm = document.getElementById('signup-form');
-    const checkoutForm = document.getElementById('checkout-form');
-    const ratingForm = document.getElementById('rating-form');
-    const searchInput = document.getElementById('search');
-    const filterCategory = document.getElementById('filter-category');
-    const filterBrand = document.getElementById('filter-brand');
-    const filterPrice = document.getElementById('filter-price');
-    const productGrid = document.querySelectorAll('.product-grid');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+}
 
-    // Khởi tạo Swiper
+function updateCart() {
+    const cartContent = document.querySelector('.cart-content');
+    const cartTotal = document.querySelector('.cart-total');
+    cartContent.innerHTML = '';
+    let total = 0;
+
+    cart.forEach(item => {
+        const product = products[item.id];
+        if (!product) return;
+        const itemTotal = product.price * item.quantity;
+        total += itemTotal;
+        cartContent.innerHTML += `
+            <div class="cart-item" data-id="${item.id}">
+                <img src="${product.imgSrc}" alt="${product.name}">
+                <div class="cart-item-details">
+                    <h4>${product.name}</h4>
+                    <p>${formatPrice(itemTotal)}</p>
+                    <div class="quantity-control">
+                        <button class="quantity-btn decrease">-</button>
+                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="${product.stock}">
+                        <button class="quantity-btn increase">+</button>
+                    </div>
+                </div>
+                <span class="remove-from-cart" aria-label="Xóa ${product.name} khỏi giỏ hàng">×</span>
+            </div>
+        `;
+    });
+
+    cartTotal.textContent = `Tổng cộng: ${formatPrice(total)}`;
+    updateCartCount();
+    saveToLocalStorage('cart', cart);
+}
+
+function updateWishlist() {
+    const wishlistContent = document.querySelector('.wishlist-content');
+    wishlistContent.innerHTML = '';
+
+    wishlist.forEach(id => {
+        const product = products[id];
+        if (!product) return;
+        wishlistContent.innerHTML += `
+            <div class="cart-item" data-id="${id}">
+                <img src="${product.imgSrc}" alt="${product.name}">
+                <div class="cart-item-details">
+                    <h4>${product.name}</h4>
+                    <p>${formatPrice(product.price)}</p>
+                </div>
+                <span class="remove-from-wishlist" aria-label="Xóa ${product.name} khỏi danh sách yêu thích">×</span>
+            </div>
+        `;
+    });
+
+    saveToLocalStorage('wishlist', wishlist);
+}
+
+function updateCompare() {
+    const compareContent = document.querySelector('.compare-content');
+    compareContent.innerHTML = '';
+
+    if (compare.length === 0) {
+        compareContent.innerHTML = '<p>Chưa có sản phẩm nào để so sánh.</p>';
+        return;
+    }
+
+    let table = '<table class="w-full border-collapse"><tr><th>Tên</th><th>Giá</th><th>Danh mục</th><th>Thương hiệu</th><th>Thông số</th></tr>';
+    compare.forEach(id => {
+        const product = products[id];
+        if (!product) return;
+        table += `
+            <tr data-id="${id}">
+                <td>${product.name}</td>
+                <td>${formatPrice(product.price)}</td>
+                <td>${product.category}</td>
+                <td>${product.brand}</td>
+                <td>${Object.entries(product.specs).map(([key, value]) => `${key}: ${value}`).join('<br>')}</td>
+            </tr>
+        `;
+    });
+    table += '</table>';
+    compareContent.innerHTML = table;
+    saveToLocalStorage('compare', compare);
+}
+
+function filterProducts() {
+    const search = document.getElementById('search').value.toLowerCase();
+    const category = document.getElementById('filter-category').value;
+    const brand = document.getElementById('filter-brand').value;
+    const priceSort = document.getElementById('filter-price').value;
+    const productGrid = document.querySelector('.product-grid');
+
+    let filteredProducts = Object.values(products).filter(product => {
+        return (
+            product.name.toLowerCase().includes(search) &&
+            (category === '' || product.category === category) &&
+            (brand === '' || product.brand === brand)
+        );
+    });
+
+    if (priceSort === 'low-to-high') {
+        filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (priceSort === 'high-to-low') {
+        filteredProducts.sort((a, b) => b.price - a.price);
+    }
+
+    productGrid.innerHTML = '';
+    filteredProducts.forEach(product => {
+        productGrid.innerHTML += `
+            <div class="product-item product-card">
+                <img src="${product.imgSrc}" alt="${product.name}" class="img" loading="lazy">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">${product.description}</p>
+                    <p class="product-price">${formatPrice(product.price)}</p>
+                    <p class="stock-status ${product.stock > 0 ? 'text-green-500' : 'text-red-500'}">${product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}</p>
+                    <div class="rating" data-id="${product.id}">Đánh giá: ${(ratings[product.id] || []).length > 0 ? (ratings[product.id].reduce((sum, r) => sum + r.rating, 0) / ratings[product.id].length).toFixed(1) : '0'} ★</div>
+                    <div class="flex flex-col gap-2">
+                        <button class="btn-add-cart add-to-cart" data-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''} tabindex="0" aria-label="Thêm ${product.name} vào giỏ hàng">Thêm vào giỏ</button>
+                        <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="${product.id}" tabindex="0" aria-label="Thêm ${product.name} vào danh sách yêu thích">Yêu thích</button>
+                        <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="${product.id}" tabindex="0" aria-label="Xem nhanh ${product.name}">Xem nhanh</button>
+                        <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="${product.id}" tabindex="0" aria-label="Thêm ${product.name} vào so sánh">So sánh</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function openModal(modalClass) {
+    const modal = document.querySelector(`.${modalClass}`);
+    modal.classList.remove('hidden');
+    modal.focus();
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modalClass) {
+    const modal = document.querySelector(`.${modalClass}`);
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     const swiper = new Swiper('.swiper-container', {
         loop: true,
-        pagination: { el: '.swiper-pagination', clickable: true },
-        autoplay: { delay: 3000 },
+        autoplay: { delay: 5000 },
+        pagination: { el: '.swiper-pagination', clickable: true }
     });
 
-    // Hiển thị thông báo Toast
-    function showToast(message) {
-        Toastify({
-            text: message,
-            duration: 3000,
-            gravity: 'top',
-            position: 'right',
-            backgroundColor: '#38a169',
-        }).showToast();
-    }
-
-    // Cập nhật giỏ hàng
-    function updateCart() {
-        cartCount.textContent = cart.length;
-        if (cart.length === 0) {
-            cartContent.innerHTML = '<p>Giỏ hàng của bạn đang trống</p>';
-            cartTotal.textContent = '0 VNĐ';
-        } else {
-            cartContent.innerHTML = cart.map(item => `
-                <p class="flex justify-between">
-                    ${item.name} - ${item.price.toLocaleString('vi-VN')} VNĐ
-                    <button class="remove-from-cart text-red-500" data-id="${item.id}" aria-label="Xóa ${item.name} khỏi giỏ hàng">Xóa</button>
-                </p>
-            `).join('');
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            cartTotal.textContent = `${total.toLocaleString('vi-VN')} VNĐ`;
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        document.querySelectorAll('.remove-from-cart').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-                cart = cart.filter(item => item.id !== id);
-                updateCart();
-                showToast(`${products[id].name} đã được xóa khỏi giỏ hàng!`);
-            });
-        });
-    }
-
-    // Cập nhật danh sách yêu thích
-    function updateWishlist() {
-        if (wishlist.length === 0) {
-            wishlistContent.innerHTML = '<p>Danh sách yêu thích của bạn đang trống</p>';
-        } else {
-            wishlistContent.innerHTML = wishlist.map(item => `
-                <p class="flex justify-between">
-                    ${item.name} - ${item.price.toLocaleString('vi-VN')} VNĐ
-                    <button class="remove-from-wishlist text-red-500" data-id="${item.id}" aria-label="Xóa ${item.name} khỏi danh sách yêu thích">Xóa</button>
-                </p>
-            `).join('');
-        }
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        document.querySelectorAll('.remove-from-wishlist').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-                wishlist = wishlist.filter(item => item.id !== id);
-                updateWishlist();
-                showToast(`${products[id].name} đã được xóa khỏi danh sách yêu thích!`);
-            });
-        });
-    }
-
-    // Cập nhật so sánh sản phẩm
-    function updateCompare() {
-        if (compareList.length === 0) {
-            compareContent.innerHTML = '<p>Chưa có sản phẩm nào để so sánh</p>';
-        } else {
-            compareContent.innerHTML = `
-                <table class="w-full border-collapse">
-                    <tr class="border-b">
-                        <th class="p-2">Tên</th>
-                        ${compareList.map(item => `<th class="p-2">${item.name}</th>`).join('')}
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">Giá</td>
-                        ${compareList.map(item => `<td class="p-2">${item.price.toLocaleString('vi-VN')} VNĐ</td>`).join('')}
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">Danh mục</td>
-                        ${compareList.map(item => `<td class="p-2">${item.category}</td>`).join('')}
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">Thương hiệu</td>
-                        ${compareList.map(item => `<td class="p-2">${item.brand}</td>`).join('')}
-                    </tr>
-                    <tr>
-                        <td class="p-2">Mô tả</td>
-                        ${compareList.map(item => `<td class="p-2">${item.description}</td>`).join('')}
-                    </tr>
-                </table>
-            `;
-        }
-        localStorage.setItem('compareList', JSON.stringify(compareList));
-    }
-
-    // Hiển thị đánh giá
-    function displayRatings() {
-        document.querySelectorAll('.rating').forEach(ratingDiv => {
-            const productId = ratingDiv.getAttribute('data-id');
-            const productRatings = ratings[productId] || [];
-            const average = productRatings.length ? (productRatings.reduce((sum, r) => sum + r.rating, 0) / productRatings.length).toFixed(1) : 0;
-            ratingDiv.innerHTML = `
-                <span class="cursor-pointer text-blue-500" data-id="${productId}" aria-label="Đánh giá ${products[productId].name}">Đánh giá: ${average} ★</span>
-            `;
-            ratingDiv.querySelector('span').addEventListener('click', () => {
-                ratingModal.classList.remove('hidden');
-                ratingForm.setAttribute('data-id', productId);
-            });
-        });
-    }
-
-    // Lọc sản phẩm
-    function filterProducts() {
-        const query = searchInput.value.toLowerCase();
-        const category = filterCategory.value;
-        const brand = filterBrand.value;
-        let priceSort = filterPrice.value;
-
-        let filteredProducts = Object.keys(products).map(id => ({ id, ...products[id] }));
-
-        // Lọc theo tìm kiếm
-        if (query) {
-            filteredProducts = filteredProducts.filter(p => 
-                p.name.toLowerCase().includes(query) || 
-                p.category.toLowerCase().includes(query) || 
-                p.brand.toLowerCase().includes(query)
-            );
-        }
-
-        // Lọc theo danh mục
-        if (category) {
-            filteredProducts = filteredProducts.filter(p => p.category === category);
-        }
-
-        // Lọc theo thương hiệu
-        if (brand) {
-            filteredProducts = filteredProducts.filter(p => p.brand === brand);
-        }
-
-        // Sắp xếp theo giá
-        if (priceSort) {
-            filteredProducts.sort((a, b) => 
-                priceSort === 'low-to-high' ? a.price - b.price : b.price - a.price
-            );
-        }
-
-        // Cập nhật giao diện
-        productGrid.forEach(grid => {
-            const items = grid.querySelectorAll('.product-item');
-            items.forEach(item => {
-                const id = item.querySelector('.add-to-cart').getAttribute('data-id');
-                if (filteredProducts.some(p => p.id === id)) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        });
-    }
-
-    // Mở giỏ hàng
-    cartCount.parentElement.addEventListener('click', () => {
-        cartModal.classList.remove('hidden');
-        updateCart();
-    });
-
-    // Mở danh sách yêu thích
-    wishlistBtn.addEventListener('click', () => {
-        wishlistModal.classList.remove('hidden');
-        updateWishlist();
-    });
-
-    // Đóng modal
-    closeModals.forEach(close => {
-        close.addEventListener('click', () => {
-            close.closest('.modal').classList.add('hidden');
-        });
-    });
-
-    // Đóng modal khi click bên ngoài
-    [cartModal, wishlistModal, authModal, quickViewModal, compareModal, checkoutModal, ratingModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.classList.add('hidden');
-        });
-    });
-
-    // Thêm vào giỏ hàng
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', () => {
-            const productId = button.getAttribute('data-id');
-            const product = { ...products[productId], id: productId };
-            if (!cart.some(item => item.id === productId)) {
-                cart.push(product);
-                updateCart();
-                showToast(`${product.name} đã được thêm vào giỏ hàng!`);
-            } else {
-                showToast(`${product.name} đã có trong giỏ hàng!`);
-            }
-        });
-    });
-
-    // Thêm vào danh sách yêu thích
-    document.querySelectorAll('.add-to-wishlist').forEach(button => {
-        button.addEventListener('click', () => {
-            const productId = button.getAttribute('data-id');
-            const product = { ...products[productId], id: productId };
-            if (!wishlist.some(item => item.id === productId)) {
-                wishlist.push(product);
-                updateWishlist();
-                showToast(`${product.name} đã được thêm vào danh sách yêu thích!`);
-            } else {
-                showToast(`${product.name} đã có trong danh sách yêu thích!`);
-            }
-        });
-    });
-
-    // Xem nhanh sản phẩm
-    document.querySelectorAll('.quick-view').forEach(button => {
-        button.addEventListener('click', () => {
-            const productId = button.getAttribute('data-id');
-            const product = products[productId];
-            quickViewContent.innerHTML = `
-                <div class="img ${product.imgClass} h-40 bg-gray-300 mb-4" role="img" aria-label="${product.name}"></div>
-                <h3 class="text-xl font-bold">${product.name}</h3>
-                <p>${product.description}</p>
-                <p class="price font-bold">${product.price.toLocaleString('vi-VN')} VNĐ</p>
-                <p>Danh mục: ${product.category}</p>
-                <p>Thương hiệu: ${product.brand}</p>
-                <button class="btn add-to-cart bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4 w-full" data-id="${productId}" aria-label="Thêm ${product.name} vào giỏ hàng">Thêm vào giỏ</button>
-            `;
-            quickViewModal.classList.remove('hidden');
-            quickViewContent.querySelector('.add-to-cart').addEventListener('click', () => {
-                const product = { ...products[productId], id: productId };
-                if (!cart.some(item => item.id === productId)) {
-                    cart.push(product);
-                    updateCart();
-                    showToast(`${product.name} đã được thêm vào giỏ hàng!`);
-                } else {
-                    showToast(`${product.name} đã có trong giỏ hàng!`);
-                }
-            });
-        });
-    });
-
-    // Thêm vào so sánh
-    document.querySelectorAll('.product-item').forEach(item => {
-        const compareBtn = document.createElement('button');
-        compareBtn.className = 'btn compare bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-2';
-        compareBtn.textContent = 'So sánh';
-        compareBtn.setAttribute('data-id', item.querySelector('.add-to-cart').getAttribute('data-id'));
-        compareBtn.setAttribute('aria-label', `Thêm ${products[compareBtn.getAttribute('data-id')].name} vào so sánh`);
-        item.querySelector('.flex').appendChild(compareBtn);
-        compareBtn.addEventListener('click', () => {
-            const productId = compareBtn.getAttribute('data-id');
-            const product = { ...products[productId], id: productId };
-            if (compareList.length < 3 && !compareList.some(item => item.id === productId)) {
-                compareList.push(product);
-                updateCompare();
-                showToast(`${product.name} đã được thêm vào so sánh!`);
-                compareModal.classList.remove('hidden');
-            } else if (compareList.length >= 3) {
-                showToast('Chỉ có thể so sánh tối đa 3 sản phẩm!');
-            } else {
-                showToast(`${product.name} đã có trong danh sách so sánh!`);
-            }
-        });
-    });
-
-    // Xóa giỏ hàng
-    clearCartBtn.addEventListener('click', () => {
-        cart = [];
-        updateCart();
-        showToast('Giỏ hàng đã được xóa!');
-    });
-
-    // Xóa danh sách yêu thích
-    clearWishlistBtn.addEventListener('click', () => {
-        wishlist = [];
-        updateWishlist();
-        showToast('Danh sách yêu thích đã được xóa!');
-    });
-
-    // Xóa so sánh
-    clearCompareBtn.addEventListener('click', () => {
-        compareList = [];
-        updateCompare();
-        showToast('Danh sách so sánh đã được xóa!');
-    });
-
-    // Thanh toán
-    checkoutBtn.addEventListener('click', () => {
-        if (cart.length > 0) {
-            cartModal.classList.add('hidden');
-            checkoutModal.classList.remove('hidden');
-        } else {
-            showToast('Giỏ hàng của bạn đang trống!');
-        }
-    });
-
-    // Xử lý form thanh toán
-    checkoutForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        showToast('Thanh toán thành công!');
-        cart = [];
-        updateCart();
-        checkoutModal.classList.add('hidden');
-        checkoutForm.reset();
-    });
-
-    // Mở modal đăng nhập
-    signInBtn.addEventListener('click', () => {
-        authModal.classList.remove('hidden');
-    });
-
-    // Chuyển tab đăng nhập/đăng ký
-    authTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            authTabs.forEach(t => t.classList.remove('border-b-2', 'border-blue-500'));
-            tab.classList.add('border-b-2', 'border-blue-500');
-            authForms.forEach(form => form.classList.add('hidden'));
-            document.querySelector(`.${tab.getAttribute('data-tab')}-form`).classList.remove('hidden');
-        });
-    });
-
-    // Form đăng ký bản tin
-    newsletterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = newsletterForm.querySelector('input[type="email"]').value;
-        showToast(`Đã đăng ký nhận bản tin với ${email}!`);
-        newsletterForm.reset();
-    });
-
-    // Form đăng nhập
-    signInForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = signInForm.querySelector('input[type="email"]').value;
-        showToast(`Đã đăng nhập với ${email}`);
-        signInForm.reset();
-        authModal.classList.add('hidden');
-    });
-
-    // Form đăng ký
-    signUpForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = signUpForm.querySelector('input[type="text"]').value;
-        const email = signUpForm.querySelector('input[type="email"]').value;
-        const password = signUpForm.querySelectorAll('input[type="password"]')[0].value;
-        const confirmPassword = signUpForm.querySelectorAll('input[type="password"]')[1].value;
-        if (password === confirmPassword) {
-            showToast(`Tài khoản đã được tạo cho ${name} với ${email}`);
-            signUpForm.reset();
-            authModal.classList.add('hidden');
-        } else {
-            showToast('Mật khẩu không khớp!');
-        }
-    });
-
-    // Xử lý đánh giá
-    let selectedRating = 0;
-    ratingForm.querySelectorAll('.star').forEach(star => {
-        star.addEventListener('click', () => {
-            selectedRating = parseInt(star.getAttribute('data-value'));
-            ratingForm.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
-            for (let i = 0; i < selectedRating; i++) {
-                ratingForm.querySelectorAll('.star')[i].classList.add('selected');
-            }
-        });
-    });
-
-    ratingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const productId = ratingForm.getAttribute('data-id');
-        const comment = ratingForm.querySelector('textarea').value;
-        if (selectedRating > 0) {
-            ratings[productId] = ratings[productId] || [];
-            ratings[productId].push({ rating: selectedRating, comment });
-            localStorage.setItem('ratings', JSON.stringify(ratings));
-            displayRatings();
-            showToast(`Đã gửi đánh giá cho ${products[productId].name}!`);
-            ratingModal.classList.add('hidden');
-            ratingForm.reset();
-            ratingForm.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
-            selectedRating = 0;
-        } else {
-            showToast('Vui lòng chọn số sao!');
-        }
-    });
-
-    // Tìm kiếm và lọc
-    [searchInput, filterCategory, filterBrand, filterPrice].forEach(input => {
-        input.addEventListener('input', filterProducts);
-    });
-
-    // Khởi tạo
     updateCart();
     updateWishlist();
     updateCompare();
-    displayRatings();
     filterProducts();
+
+    auth.onAuthStateChanged(user => {
+        const signInBtn = document.querySelector('.sign-in');
+        if (user) {
+            signInBtn.textContent = 'Đăng xuất';
+            signInBtn.addEventListener('click', () => {
+                auth.signOut().then(() => showToast('Đăng xuất thành công!'));
+            });
+        } else {
+            signInBtn.textContent = 'Đăng nhập';
+            signInBtn.addEventListener('click', () => openModal('auth-modal'));
+        }
+    });
+
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('cart-icon')) {
+            openModal('cart-modal');
+        } else if (e.target.classList.contains('wishlist')) {
+            openModal('wishlist-modal');
+        } else if (e.target.classList.contains('close')) {
+            const modal = e.target.closest('.modal');
+            closeModal(modal.classList[1]);
+        } else if (e.target.classList.contains('add-to-cart')) {
+            const id = e.target.dataset.id;
+            const product = products[id];
+            if (product.stock === 0) {
+                showToast(`${product.name} đã hết hàng!`, 'error');
+                return;
+            }
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity++;
+                    showToast(`${product.name} đã được thêm vào giỏ hàng!`);
+                } else {
+                    showToast(`Không thể thêm thêm ${product.name}, đã đạt giới hạn tồn kho!`, 'error');
+                }
+            } else {
+                cart.push({ id, quantity: 1 });
+                showToast(`${product.name} đã được thêm vào giỏ hàng!`);
+            }
+            updateCart();
+        } else if (e.target.classList.contains('remove-from-cart')) {
+            const id = e.target.closest('.cart-item').dataset.id;
+            cart = cart.filter(item => item.id !== id);
+            showToast(`${products[id].name} đã được xóa khỏi giỏ hàng!`);
+            updateCart();
+        } else if (e.target.classList.contains('add-to-wishlist')) {
+            const id = e.target.dataset.id;
+            if (!wishlist.includes(id)) {
+                wishlist.push(id);
+                showToast(`${products[id].name} đã được thêm vào danh sách yêu thích!`);
+            } else {
+                showToast(`${products[id].name} đã có trong danh sách yêu thích!`, 'error');
+            }
+            updateWishlist();
+        } else if (e.target.classList.contains('remove-from-wishlist')) {
+            const id = e.target.closest('.cart-item').dataset.id;
+            wishlist = wishlist.filter(wid => wid !== id);
+            showToast(`${products[id].name} đã được xóa khỏi danh sách yêu thích!`);
+            updateWishlist();
+        } else if (e.target.classList.contains('quick-view')) {
+            const id = e.target.dataset.id;
+            const product = products[id];
+            const quickViewContent = document.querySelector('.quick-view-content');
+            quickViewContent.innerHTML = `
+                <img src="${product.imgSrc}" alt="${product.name}" class="w-full h-64 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-bold">${product.name}</h3>
+                <p>${product.description}</p>
+                <p class="font-bold">${formatPrice(product.price)}</p>
+                <p class="${product.stock > 0 ? 'text-green-500' : 'text-red-500'}">${product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}</p>
+                <ul>${Object.entries(product.specs).map(([key, value]) => `<li>${key}: ${value}</li>`).join('')}</ul>
+                <button class="btn-add-cart btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4 w-full" data-id="${id}" ${product.stock === 0 ? 'disabled' : ''}>Thêm vào giỏ</button>
+            `;
+            openModal('quick-view-modal');
+        } else if (e.target.classList.contains('compare')) {
+            const id = e.target.dataset.id;
+            if (compare.length < 4 && !compare.includes(id)) {
+                compare.push(id);
+                showToast(`${products[id].name} đã được thêm vào so sánh!`);
+                updateCompare();
+            } else {
+                showToast('Không thể thêm! Đã đạt giới hạn so sánh hoặc sản phẩm đã có.', 'error');
+            }
+        } else if (e.target.classList.contains('clear-compare')) {
+            compare = [];
+            showToast('Đã xóa tất cả sản phẩm so sánh!');
+            updateCompare();
+        } else if (e.target.classList.contains('checkout')) {
+            if (cart.length === 0) {
+                showToast('Giỏ hàng trống!', 'error');
+                return;
+            }
+            openModal('checkout-modal');
+        } else if (e.target.classList.contains('clear-cart')) {
+            cart = [];
+            showToast('Giỏ hàng đã được xóa!');
+            updateCart();
+        } else if (e.target.classList.contains('clear-wishlist')) {
+            wishlist = [];
+            showToast('Danh sách yêu thích đã được xóa!');
+            updateWishlist();
+        } else if (e.target.classList.contains('decrease')) {
+            const id = e.target.closest('.cart-item').dataset.id;
+            const item = cart.find(i => i.id === id);
+            if (item.quantity > 1) {
+                item.quantity--;
+                updateCart();
+            }
+        } else if (e.target.classList.contains('increase')) {
+            const id = e.target.closest('.cart-item').dataset.id;
+            const item = cart.find(i => i.id === id);
+            const product = products[id];
+            if (item.quantity < product.stock) {
+                item.quantity++;
+                updateCart();
+            } else {
+                showToast(`Không thể thêm thêm ${product.name}, đã đạt giới hạn tồn kho!`, 'error');
+            }
+        }
+    });
+
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('border-b-2', 'border-blue-500'));
+            tab.classList.add('border-b-2', 'border-blue-500');
+            document.querySelectorAll('.auth-form').forEach(form => form.classList.add('hidden'));
+            document.querySelector(`.${tab.dataset.tab}-form`).classList.remove('hidden');
+        });
+    });
+
+    document.getElementById('signin-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const email = document.getElementById('signin-email').value;
+        const password = document.getElementById('signin-password').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showToast('Email không hợp lệ!', 'error');
+            return;
+        }
+        auth.signInWithEmailAndPassword(email, password)
+            .then(() => {
+                showToast('Đăng nhập thành công!');
+                closeModal('auth-modal');
+            })
+            .catch(error => showToast(`Lỗi đăng nhập: ${error.message}`, 'error'));
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showToast('Email không hợp lệ!', 'error');
+            return;
+        }
+        if (password.length < 6) {
+            showToast('Mật khẩu phải dài ít nhất 6 ký tự!', 'error');
+            return;
+        }
+        if (password !== confirmPassword) {
+            showToast('Mật khẩu xác nhận không khớp!', 'error');
+            return;
+        }
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(userCredential => {
+                userCredential.user.updateProfile({ displayName: name });
+                showToast('Đăng ký thành công!');
+                closeModal('auth-modal');
+            })
+            .catch(error => showToast(`Lỗi đăng ký: ${error.message}`, 'error'));
+    });
+
+    document.getElementById('checkout-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('checkout-name').value;
+        const email = document.getElementById('checkout-email').value;
+        const address = document.getElementById('checkout-address').value;
+        const phone = document.getElementById('checkout-phone').value;
+        const paymentMethod = document.getElementById('checkout-payment').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10,11}$/;
+        if (!emailRegex.test(email)) {
+            showToast('Email không hợp lệ!', 'error');
+            return;
+        }
+        if (!phoneRegex.test(phone)) {
+            showToast('Số điện thoại không hợp lệ!', 'error');
+            return;
+        }
+        const order = {
+            id: `ORDER-${Date.now()}`,
+            date: new Date().toLocaleString('vi-VN'),
+            items: cart,
+            total: cart.reduce((sum, item) => sum + products[item.id].price * item.quantity, 0),
+            customer: { name, email, address, phone },
+            paymentMethod
+        };
+        orders.push(order);
+        saveToLocalStorage('orders', orders);
+        cart = [];
+        updateCart();
+        closeModal('checkout-modal');
+        showToast('Thanh toán thành công! Đơn hàng của bạn đã được ghi nhận.');
+    });
+
+    document.getElementById('rating-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const productId = document.getElementById('rating-form').dataset.productId;
+        const rating = parseInt(document.querySelector('.star.filled:last-child').dataset.value);
+        const comment = document.querySelector('#rating-form textarea').value;
+        if (!ratings[productId]) ratings[productId] = [];
+        ratings[productId].push({ rating, comment });
+        saveToLocalStorage('ratings', ratings);
+        showToast('Đánh giá của bạn đã được gửi!');
+        closeModal('rating-modal');
+        filterProducts();
+    });
+
+    document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', () => {
+            const value = parseInt(star.dataset.value);
+            document.querySelectorAll('.star').forEach(s => {
+                s.classList.toggle('filled', parseInt(s.dataset.value) <= value);
+            });
+        });
+    });
+
+    document.getElementById('search').addEventListener('input', filterProducts);
+    document.getElementById('filter-category').addEventListener('change', filterProducts);
+    document.getElementById('filter-brand').addEventListener('change', filterProducts);
+    document.getElementById('filter-price').addEventListener('change', filterProducts);
+
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', e => {
+            const id = e.target.closest('.cart-item').dataset.id;
+            const item = cart.find(i => i.id === id);
+            const product = products[id];
+            const value = parseInt(e.target.value);
+            if (value < 1) {
+                e.target.value = 1;
+                item.quantity = 1;
+            } else if (value > product.stock) {
+                e.target.value = product.stock;
+                item.quantity = product.stock;
+                showToast(`Không thể thêm thêm ${product.name}, đã đạt giới hạn tồn kho!`, 'error');
+            } else {
+                item.quantity = value;
+            }
+            updateCart();
+        });
+    });
+
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeModal(modal.classList[1]);
+        });
+        modal.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal(modal.classList[1]);
+        });
+    });
 });
