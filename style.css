@@ -1,0 +1,73 @@
+/* Custom styles to complement Tailwind CSS */
+.img {
+    background-size: cover;
+    background-position: center;
+}
+
+.img.macbook { background-image: url('images/macbook.jpg'); }
+.img.iphone { background-image: url('images/iphone.jpg'); }
+.img.samsung { background-image: url('images/samsung.jpg'); }
+.img.pixel { background-image: url('images/pixel.jpg'); }
+.img.oneplus { background-image: url('images/oneplus.jpg'); }
+.img.xiaomi { background-image: url('images/xiaomi.jpg'); }
+.img.dell { background-image: url('images/dell.jpg'); }
+.img.asus { background-image: url('images/asus.jpg'); }
+.img.lenovo { background-image: url('images/lenovo.jpg'); }
+.img.hp { background-image: url('images/hp.jpg'); }
+.img.sony { background-image: url('images/sony.jpg'); }
+.img.airpods { background-image: url('images/airpods.jpg'); }
+.img.homepod { background-image: url('images/homepod.jpg'); }
+.img.bose { background-image: url('images/bose.jpg'); }
+.img.jbl { background-image: url('images/jbl.jpg'); }
+.img.razer { background-image: url('images/razer.jpg'); }
+.img.applewatch { background-image mocht: url('images/applewatch.jpg'); }
+.img.speaker { background-image: url('images/speaker.jpg'); }
+.img.headphones { background-image: url('images/headphones.jpg'); }
+
+.social-icon {
+    background-size: cover;
+}
+
+.social-icon.facebook { background-image: url('images/facebook.png'); }
+.social-icon.twitter { background-image: url('images/twitter.png'); }
+.social-icon.instagram { background-image: url('images/instagram.png'); }
+.social-icon.linkedin { background-image: url('images/linkedin.png'); }
+
+.product-item, .category-item, .feature-item, .stat-item {
+    transition: transform 0.2s;
+}
+
+.product-item:hover, .category-item:hover, .feature-item:hover, .stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.cart-content p, .wishlist-content p, .quick-view-content p, .compare-content p {
+    margin: 5px 0;
+}
+
+.stars .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #ccc;
+}
+
+.stars .star.selected {
+    color: #ffd700;
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.swiper-pagination-bullet-active {
+    background: #007bff;
+}
