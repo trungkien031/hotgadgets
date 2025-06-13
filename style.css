@@ -75,10 +75,15 @@ html {
     text-decoration: none;
 }
 
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .navbar-nav .nav-link {
     color: var(--text-dark);
     font-weight: 500;
-    margin: 0 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 25px;
     transition: all 0.3s ease;
@@ -119,13 +124,16 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
+    padding: 2rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .hero-section h1 {
@@ -153,6 +161,7 @@ html {
     display: inline-block;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-medium);
+    margin-top: 1rem;
 }
 
 .btn-primary-custom:hover {
@@ -170,6 +179,8 @@ html {
 .carousel-item {
     padding: 60px 0;
     text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
 }
 
 .carousel-item h3 {
@@ -178,29 +189,6 @@ html {
 
 .carousel-item p {
     color: var(--text-light);
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 20px;
-}
-
-.carousel-indicators [data-bs-target] {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.carousel-indicators .active {
-    background: white;
 }
 
 .section-header {
@@ -380,26 +368,6 @@ html {
     color: var(--text-light);
 }
 
-.category-box.smartphones img {
-    content: url('https://images.unsplash.com/photo-1592899677971-0b06e0a6d2b1?auto=format&fit=crop&w=80&q=80');
-}
-
-.category-box.laptops img {
-    content: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=80&q=80');
-}
-
-.category-box.audio img {
-    content: url('https://images.unsplash.com/photo-1594631252845-4e8f67f64b4a?auto=format&fit=crop&w=80&q=80');
-}
-
-.category-box.accessories img {
-    content: url('https://images.unsplash.com/photo-1553546072-7be3a7e78371?auto=format&fit=crop&w=80&q=80');
-}
-
-.category-box.gaming img {
-    content: url('https://images.pexels.com/photos/614484/pexels-photo-614484.jpeg?auto=format&fit=crop&w=80&q=80');
-}
-
 .about-section {
     padding: 80px 0;
     background: url('https://images.unsplash.com/photo-1516321318423-f06f85e165b7?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
@@ -504,8 +472,7 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .newsletter-form {
@@ -569,6 +536,7 @@ footer {
     border-radius: 50%;
     margin-right: 10px;
     transition: all 0.3s ease;
+    font-size: 1.5rem;
 }
 
 .social-links a:hover {
@@ -576,24 +544,24 @@ footer {
     transform: translateY(-3px);
 }
 
-.social-links a.facebook {
-    background-image: url('https://cdn.pixabay.com/photo/2015/05/17/10/51/facebook-770688_1280.png');
-    background-size: cover;
+.social-links a::before {
+    font-family: 'Font Awesome 5 Brands';
 }
 
-.social-links a.twitter {
-    background-image: url('https://cdn.pixabay.com/photo/2015/05/17/10/51/twitter-770695_1280.png');
-    background-size: cover;
+.social-links a.facebook::before {
+    content: "\f39e";
 }
 
-.social-links a.instagram {
-    background-image: url('https://cdn.pixabay.com/photo/2016/09/17/18/09/instagram-1675670_1280.png');
-    background-size: cover;
+.social-links a.twitter::before {
+    content: "\f099";
 }
 
-.social-links a.linkedin {
-    background-image: url('https://cdn.pixabay.com/photo/2015/05/17/10/51/linkedin-770697_1280.png');
-    background-size: cover;
+.social-links a.instagram::before {
+    content: "\f16d";
+}
+
+.social-links a.linkedin::before {
+    content: "\f0e1";
 }
 
 .footer-bottom {
@@ -649,20 +617,15 @@ footer {
     margin-right: 1rem;
 }
 
-.cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1999;
+.modal {
+    display: none;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.cart-overlay.show {
+.modal:not(.hidden) {
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
@@ -872,17 +835,6 @@ footer {
     }
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 @media (max-width: 768px) {
     .hero-section h1 {
         font-size: 2.5rem;
@@ -897,8 +849,8 @@ footer {
     }
 
     .navbar-nav {
-        text-align: center;
         flex-direction: column;
+        align-items: flex-start;
         gap: 1rem;
     }
 
