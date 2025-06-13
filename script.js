@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Dữ liệu sản phẩm
     const products = {
-        iphone15: { name: 'iPhone 15 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Apple', description: 'iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.' },
-        samsung24: { name: 'Samsung Galaxy S24 Ultra', price: 33590000, category: 'Điện thoại thông minh', brand: 'Samsung', description: 'Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.' },
-        pixel8: { name: 'Google Pixel 8 Pro', price: 25190000, category: 'Điện thoại thông minh', brand: 'Google', description: 'Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.' },
-        oneplus12: { name: 'OnePlus 12', price: 25190000, category: 'Điện thoại thông minh', brand: 'OnePlus', description: 'Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.' },
-        xiaomi14: { name: 'Xiaomi 14 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Xiaomi', description: 'HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.' },
-        macbookm3: { name: 'MacBook Pro M3', price: 55990000, category: 'Máy tính xách tay', brand: 'Apple', description: 'Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.' },
-        dellxps13: { name: 'Dell XPS 13', price: 36390000, category: 'Máy tính xách tay', brand: 'Dell', description: 'Laptop siêu di động với màn hình InfinityEdge và bộ vi xử lý Intel mạnh mẽ.' },
-        asusrog: { name: 'ASUS ROG Gaming Laptop', price: 50390000, category: 'Máy tính xách tay', brand: 'ASUS', description: 'Laptop chơi game hiệu năng cao với đồ họa RTX 4070 và màn hình 144Hz.' },
-        lenovo12: { name: 'Lenovo ThinkPad X1 Carbon Gen 12', price: 41990000, category: 'Máy tính xách tay', brand: 'Lenovo', description: 'Laptop doanh nhân nhẹ với Intel Ultra 9 và màn hình OLED 2.8K.' },
-        hpspectre: { name: 'HP Spectre x360 14', price: 44790000, category: 'Máy tính xách tay', brand: 'HP', description: 'Laptop chuyển đổi với Intel thế hệ 13, màn hình OLED 3:2, hỗ trợ bút.' },
-        sonywh: { name: 'Sony WH-1000XM5', price: 11190000, category: 'Âm thanh', brand: 'Sony', description: 'Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.' },
-        airpods: { name: 'AirPods Pro', price: 6990000, category: 'Âm thanh', brand: 'Apple', description: 'Âm thanh không gian cá nhân hóa, theo dõi chuyển động đầu, chế độ xuyên âm.' },
-        homepod: { name: 'HomePod mini', price: 2790000, category: 'Âm thanh', brand: 'Apple', description: 'Loa thông minh nhỏ gọn với âm thanh đầy phòng và trí thông minh Siri.' },
-        boseultra: { name: 'Bose QuietComfort Ultra', price: 9790000, category: 'Âm thanh', brand: 'Bose', description: 'Tai nghe nhét tai khử tiếng ồn cao cấp với âm thanh sống động.' },
-        jblboombox: { name: 'JBL Boombox 3', price: 13990000, category: 'Âm thanh', brand: 'JBL', description: 'Loa di động mạnh mẽ với âm trầm sâu và pin 24 giờ.' },
-        razerblade: { name: 'Razer Blade 16', price: 75590000, category: 'Chơi game', brand: 'Razer', description: 'Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.' },
-        applewatch: { name: 'Apple Watch Ultra 2', price: 22390000, category: 'Phụ kiện', brand: 'Apple', description: 'Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.' }
+        iphone15: { name: 'iPhone 15 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Apple', description: 'iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.', imgClass: 'iphone' },
+        samsung24: { name: 'Samsung Galaxy S24 Ultra', price: 33590000, category: 'Điện thoại thông minh', brand: 'Samsung', description: 'Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.', imgClass: 'samsung' },
+        pixel8: { name: 'Google Pixel 8 Pro', price: 25190000, category: 'Điện thoại thông minh', brand: 'Google', description: 'Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.', imgClass: 'pixel' },
+        oneplus12: { name: 'OnePlus 12', price: 25190000, category: 'Điện thoại thông minh', brand: 'OnePlus', description: 'Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.', imgClass: 'oneplus' },
+        xiaomi14: { name: 'Xiaomi 14 Pro', price: 27990000, category: 'Điện thoại thông minh', brand: 'Xiaomi', description: 'HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.', imgClass: 'xiaomi' },
+        macbookm3: { name: 'MacBook Pro M3', price: 55990000, category: 'Máy tính xách tay', brand: 'Apple', description: 'Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.', imgClass: 'macbook' },
+        dellxps13: { name: 'Dell XPS 13', price: 36390000, category: 'Máy tính xách tay', brand: 'Dell', description: 'Laptop siêu di động với màn hình InfinityEdge và bộ vi xử lý Intel mạnh mẽ.', imgClass: 'dell' },
+        asusrog: { name: 'ASUS ROG Gaming Laptop', price: 50390000, category: 'Máy tính xách tay', brand: 'ASUS', description: 'Laptop chơi game hiệu năng cao với đồ họa RTX 4070 và màn hình 144Hz.', imgClass: 'asus' },
+        lenovo12: { name: 'Lenovo ThinkPad X1 Carbon Gen 12', price: 41990000, category: 'Máy tính xách tay', brand: 'Lenovo', description: 'Laptop doanh nhân nhẹ với Intel Ultra 9 và màn hình OLED 2.8K.', imgClass: 'lenovo' },
+        hpspectre: { name: 'HP Spectre x360 14', price: 44790000, category: 'Máy tính xách tay', brand: 'HP', description: 'Laptop chuyển đổi với Intel thế hệ 13, màn hình OLED 3:2, hỗ trợ bút.', imgClass: 'hp' },
+        sonywh: { name: 'Sony WH-1000XM5', price: 11190000, category: 'Âm thanh', brand: 'Sony', description: 'Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.', imgClass: 'sony' },
+        airpods: { name: 'AirPods Pro', price: 6990000, category: 'Âm thanh', brand: 'Apple', description: 'Âm thanh không gian cá nhân hóa, theo dõi chuyển động đầu, chế độ xuyên âm.', imgClass: 'airpods' },
+        homepod: { name: 'HomePod mini', price: 2790000, category: 'Âm thanh', brand: 'Apple', description: 'Loa thông minh nhỏ gọn với âm thanh đầy phòng và trí thông minh Siri.', imgClass: 'homepod' },
+        boseultra: { name: 'Bose QuietComfort Ultra', price: 9790000, category: 'Âm thanh', brand: 'Bose', description: 'Tai nghe nhét tai khử tiếng ồn cao cấp với âm thanh sống động.', imgClass: 'bose' },
+        jblboombox: { name: 'JBL Boombox 3', price: 13990000, category: 'Âm thanh', brand: 'JBL', description: 'Loa di động mạnh mẽ với âm trầm sâu và pin 24 giờ.', imgClass: 'jbl' },
+        razerblade: { name: 'Razer Blade 16', price: 75590000, category: 'Chơi game', brand: 'Razer', description: 'Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.', imgClass: 'razer' },
+        applewatch: { name: 'Apple Watch Ultra 2', price: 22390000, category: 'Phụ kiện', brand: 'Apple', description: 'Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.', imgClass: 'applewatch' }
     };
 
     // Trạng thái
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingModal = document.querySelector('.rating-modal');
     const cartCount = document.querySelector('.cart-count');
     const cartContent = document.querySelector('.cart-modal .cart-content');
-    const cartTotal = document.querySelector('.cart-modal .cart-total p');
+    const cartTotal = document.querySelector('.cart-modal .cart-total');
     const wishlistContent = document.querySelector('.wishlist-modal .wishlist-content');
     const quickViewContent = document.querySelector('.quick-view-modal .quick-view-content');
     const compareContent = document.querySelector('.compare-modal .compare-content');
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cartCount.textContent = cart.length;
         if (cart.length === 0) {
             cartContent.innerHTML = '<p>Giỏ hàng của bạn đang trống</p>';
-            cartTotal.textContent = 'Tổng cộng: 0 VNĐ';
+            cartTotal.textContent = '0 VNĐ';
         } else {
             cartContent.innerHTML = cart.map(item => `
                 <p class="flex justify-between">
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </p>
             `).join('');
             const total = cart.reduce((sum, item) => sum + item.price, 0);
-            cartTotal.textContent = `Tổng cộng: ${total.toLocaleString('vi-VN')} VNĐ`;
+            cartTotal.textContent = `${total.toLocaleString('vi-VN')} VNĐ`;
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         document.querySelectorAll('.remove-from-cart').forEach(button => {
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const productId = button.getAttribute('data-id');
             const product = products[productId];
             quickViewContent.innerHTML = `
-                <div class="img ${productId} h-40 bg-gray-300 mb-4" role="img" aria-label="${product.name}"></div>
+                <div class="img ${product.imgClass} h-40 bg-gray-300 mb-4" role="img" aria-label="${product.name}"></div>
                 <h3 class="text-xl font-bold">${product.name}</h3>
                 <p>${product.description}</p>
                 <p class="price font-bold">${product.price.toLocaleString('vi-VN')} VNĐ</p>
