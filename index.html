@@ -1,101 +1,407 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-卓: <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hot Gadgets - Cửa hàng công nghệ cao cấp</title>
-    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Hot Gadgets - Mua sắm điện thoại, laptop, và phụ kiện công nghệ cao cấp">
+    <meta name="keywords" content="điện thoại thông minh, laptop, tai nghe, Hot Gadgets">
+    <title>Hot Gadgets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" onerror="loadLocalSwiper()">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js" onerror="loadLocalSwiper()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js" onerror="loadLocalToastify()"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+    <script>
+        function loadLocalSwiper() {
+            const script = document.createElement('script');
+            script.src = 'swiper-bundle.min.js';
+            document.head.appendChild(script);
+        }
+        function loadLocalToastify() {
+            const script = document.createElement('script');
+            script.src = 'toastify.min.js';
+            document.head.appendChild(script);
+        }
+    </script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg" id="mainNavbar">
-        <div class="container">
-            <a class="navbar-brand" href="#home">
-                <i class="fas fa-mobile-alt me-2"></i>Hot Gadgets
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="search-container mx-auto">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Tìm kiếm sản phẩm..." id="search">
-                    <div class="search-results" id="searchResults"></div>
+    <header class="navbar">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="navbar-brand" tabindex="0">Hot Gadgets</a>
+            <nav class="navbar-nav flex items-center space-x-4">
+                <a href="#" class="nav-link" tabindex="0">Trang chủ</a>
+                <a href="#products" class="nav-link" tabindex="0">Sản phẩm</a>
+                <a href="#categories" class="nav-link" tabindex="0">Danh mục</a>
+                <a href="#about" class="nav-link" tabindex="0">Giới thiệu</a>
+                <a href="#contact" class="nav-link" tabindex="0">Liên hệ</a>
+                <div class="relative">
+                    <i class="fas fa-shopping-cart text-2xl cursor-pointer cart-icon" tabindex="0" aria-label="Mở giỏ hàng"></i>
+                    <span class="cart-count cart-badge">0</span>
                 </div>
-                <ul class="navbar-nav ms-auto me-4">
-                    <li class="nav-item"><a class="nav-link" href="#home">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#products">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#categories">Danh mục</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
-                </ul>
-                <button class="btn btn-outline-primary position-relative me-3" id="cartToggle">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge cart-count">0</span>
-                </button>
-                <button class="btn btn-primary-custom sign-in" data-bs-toggle="modal" data-bs-target="#authModal">
-                    <i class="fas fa-user me-2"></i>Đăng nhập
-                </button>
-                <button class="btn btn-outline-primary wishlist me-3">
-                    <i class="fas fa-heart"></i>
-                </button>
+                <button class="sign-in btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" tabindex="0" aria-label="Mở đăng nhập">Đăng nhập</button>
+                <button class="wishlist btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600" tabindex="0" aria-label="Mở danh sách yêu thích">Yêu thích</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container mx-auto px-4 hero-content text-center">
+            <h1>Hot Gadgets</h1>
+            <p>Khám phá các thiết bị công nghệ tiên tiến với giá cả cạnh tranh</p>
+            <a href="#products" class="btn-primary-custom" tabindex="0">Mua ngay</a>
+        </div>
+    </section>
+
+    <section class="carousel-section py-16">
+        <div class="container mx-auto px-4">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="carousel-item text-center">
+                            <h3 class="text-2xl font-bold">MacBook Pro M3</h3>
+                            <p>Trải nghiệm hiệu năng đỉnh cao với MacBook Pro mới nhất, chip M3, màn hình Liquid Retina, và pin suốt cả ngày.</p>
+                            <a href="#products" class="btn-primary-custom" tabindex="0">Mua ngay</a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="carousel-item text-center">
+                            <h3 class="text-2xl font-bold">Âm thanh cao cấp</h3>
+                            <p>Đắm mình trong âm thanh trong trẻo với bộ sưu tập loa cao cấp, hoàn hảo cho rạp hát tại nhà và người yêu âm nhạc.</p>
+                            <a href="#products" class="btn-primary-custom" tabindex="0">Khám phá thêm</a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="carousel-item text-center">
+                            <h3 class="text-2xl font-bold">Tự do không dây</h3>
+                            <p>Tai nghe không dây cao cấp với khử tiếng ồn chủ động, chất lượng âm thanh vượt trội, và thoải mái cả ngày.</p>
+                            <a href="#products" class="btn-primary-custom" tabindex="0">Xem bộ sưu tập</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <!-- Hero Section with Carousel -->
-    <section class="hero-section" id="home">
-        <div class="container">
-            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+    <section id="products" class="products-section py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
+                <h2 class="section-title">Sản phẩm nổi bật</h2>
+                <p class="section-subtitle">Khám phá công nghệ tiên tiến với các sản phẩm hàng đầu của chúng tôi</p>
+                <div class="title-divider"></div>
+                <div class="search-container mb-8 flex justify-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="search" class="search-input pl-10 pr-4 py-2 rounded-full border" placeholder="Tìm kiếm sản phẩm..." tabindex="0">
+                        <i class="fas fa-search search-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <select id="filter-category" class="border rounded-full px-4 py-2" tabindex="0">
+                        <option value="">Tất cả danh mục</option>
+                        <option value="Điện thoại thông minh">Điện thoại thông minh</option>
+                        <option value="Máy tính xách tay">Máy tính xách tay</option>
+                        <option value="Âm thanh">Âm thanh</option>
+                        <option value="Chơi game">Chơi game</option>
+                        <option value="Phụ kiện">Phụ kiện</option>
+                    </select>
+                    <select id="filter-brand" class="border rounded-full px-4 py-2" tabindex="0">
+                        <option value="">Tất cả thương hiệu</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Google">Google</option>
+                        <option value="OnePlus">OnePlus</option>
+                        <option value="Xiaomi">Xiaomi</option>
+                        <option value="Dell">Dell</option>
+                        <option value="ASUS">ASUS</option>
+                        <option value="Lenovo">Lenovo</option>
+                        <option value="HP">HP</option>
+                        <option value="Sony">Sony</option>
+                        <option value="Bose">Bose</option>
+                        <option value="JBL">JBL</option>
+                        <option value="Razer">Razer</option>
+                    </select>
+                    <select id="filter-price" class="border rounded-full px-4 py-2" tabindex="0">
+                        <option value="">Sắp xếp theo giá</option>
+                        <option value="low-to-high">Thấp đến cao</option>
+                        <option value="high-to-low">Cao đến thấp</option>
+                    </select>
                 </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 hero-content" data-aos="fade-right">
-                                <h1>MacBook Pro M3</h1>
-                                <p>Trải nghiệm hiệu năng đỉnh cao với MacBook Pro mới nhất, chip M3, màn hình Liquid Retina, và pin suốt cả ngày.</p>
-                                <a href="#products" class="btn-primary-custom">Mua ngay <i class="fas fa-arrow-right ms-2"></i></a>
-                            </div>
-                            <div class="col-lg-6" data-aos="fade-left">
-                                <div class="img macbook h-64 bg-gray-300"></div>
-                            </div>
+            </div>
+            <div class="product-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Điện thoại thông minh -->
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1592899677971-0b06e0a6d2b1?auto=format&fit=crop&w=800&q=80" alt="iPhone 15 Pro" class="img iphone" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">iPhone 15 Pro</h5>
+                        <p class="card-text">iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.</p>
+                        <p class="product-price">27.990.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="iphone15">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="iphone15" tabindex="0" aria-label="Thêm iPhone 15 Pro vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="iphone15" tabindex="0" aria-label="Thêm iPhone 15 Pro vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="iphone15" tabindex="0" aria-label="Xem nhanh iPhone 15 Pro">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="iphone15" tabindex="0" aria-label="Thêm iPhone 15 Pro vào so sánh">So sánh</button>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 hero-content" data-aos="fade-right">
-                                <h1>Âm thanh cao cấp</h1>
-                                <p>Đắm mình trong âm thanh trong trẻo với bộ sưu tập loa cao cấp, hoàn hảo cho rạp hát tại nhà và người yêu âm nhạc.</p>
-                                <a href="#products" class="btn-primary-custom">Khám phá thêm <i class="fas fa-arrow-right ms-2"></i></a>
-                            </div>
-                            <div class="col-lg-6" data-aos="fade-left">
-                                <div class="img speaker h-64 bg-gray-300"></div>
-                            </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1610945265064-0e34e40d7bc3?auto=format&fit=crop&w=800&q=80" alt="Samsung Galaxy S24 Ultra" class="img samsung" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Samsung Galaxy S24 Ultra</h5>
+                        <p class="card-text">Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.</p>
+                        <p class="product-price">33.590.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="samsung24">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="samsung24" tabindex="0" aria-label="Thêm Samsung Galaxy S24 Ultra vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="samsung24" tabindex="0" aria-label="Thêm Samsung Galaxy S24 Ultra vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="samsung24" tabindex="0" aria-label="Xem nhanh Samsung Galaxy S24 Ultra">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="samsung24" tabindex="0" aria-label="Thêm Samsung Galaxy S24 Ultra vào so sánh">So sánh</button>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 hero-content" data-aos="fade-right">
-                                <h1>Tự do không dây</h1>
-                                <p>Tai nghe không dây cao cấp với khử tiếng ồn chủ động, chất lượng âm thanh vượt trội, và thoải mái cả ngày.</p>
-                                <a href="#products" class="btn-primary-custom">Xem bộ sưu tập <i class="fas fa-arrow-right ms-2"></i></a>
-                            </div>
-                            <div class="col-lg-6" data-aos="fade-left">
-                                <div class="img headphones h-64 bg-gray-300"></div>
-                            </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1604315653088-6c0e86f3f3a7?auto=format&fit=crop&w=800&q=80" alt="Google Pixel 8 Pro" class="img pixel" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Google Pixel 8 Pro</h5>
+                        <p class="card-text">Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.</p>
+                        <p class="product-price">25.190.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="pixel8">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="pixel8" tabindex="0" aria-label="Thêm Google Pixel 8 Pro vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="pixel8" tabindex="0" aria-label="Thêm Google Pixel 8 Pro vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="pixel8" tabindex="0" aria-label="Xem nhanh Google Pixel 8 Pro">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="pixel8" tabindex="0" aria-label="Thêm Google Pixel 8 Pro vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=format&fit=crop&w=800&q=80" alt="OnePlus 12" class="img oneplus" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">OnePlus 12</h5>
+                        <p class="card-text">Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.</p>
+                        <p class="product-price">25.190.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="oneplus12">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="oneplus12" tabindex="0" aria-label="Thêm OnePlus 12 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="oneplus12" tabindex="0" aria-label="Thêm OnePlus 12 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="oneplus12" tabindex="0" aria-label="Xem nhanh OnePlus 12">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="oneplus12" tabindex="0" aria-label="Thêm OnePlus 12 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.pexels.com/photos/7743467/pexels-photo-7743467.jpeg?auto=format&fit=crop&w=800&q=80" alt="Xiaomi 14 Pro" class="img xiaomi" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Xiaomi 14 Pro</h5>
+                        <p class="card-text">HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.</p>
+                        <p class="product-price">27.990.000 VNĐ</p>
+                        <p class="stock-status text-red-500">Hết hàng</p>
+                        <div class="rating" data-id="xiaomi14">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="xiaomi14" disabled tabindex="0" aria-label="Xiaomi 14 Pro đã hết hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="xiaomi14" tabindex="0" aria-label="Thêm Xiaomi 14 Pro vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="xiaomi14" tabindex="0" aria-label="Xem nhanh Xiaomi 14 Pro">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="xiaomi14" tabindex="0" aria-label="Thêm Xiaomi 14 Pro vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Máy tính xách tay -->
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="MacBook Pro M3" class="img macbook" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">MacBook Pro M3</h5>
+                        <p class="card-text">Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.</p>
+                        <p class="product-price">55.990.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="macbookm3">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="macbookm3" tabindex="0" aria-label="Thêm MacBook Pro M3 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="macbookm3" tabindex="0" aria-label="Thêm MacBook Pro M3 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="macbookm3" tabindex="0" aria-label="Xem nhanh MacBook Pro M3">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="macbookm3" tabindex="0" aria-label="Thêm MacBook Pro M3 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1611078489935-0cb7bf04a5b8?auto=format&fit=crop&w=800&q=80" alt="Dell XPS 13" class="img dell" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Dell XPS 13</h5>
+                        <p class="card-text">Laptop siêu di động với màn hình InfinityEdge và bộ vi xử lý Intel mạnh mẽ.</p>
+                        <p class="product-price">36.390.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="dellxps13">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="dellxps13" tabindex="0" aria-label="Thêm Dell XPS 13 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="dellxps13" tabindex="0" aria-label="Thêm Dell XPS 13 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="dellxps13" tabindex="0" aria-label="Xem nhanh Dell XPS 13">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="dellxps13" tabindex="0" aria-label="Thêm Dell XPS 13 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1629131726692-1ae78a5c6336?auto=format&fit=crop&w=800&q=80" alt="ASUS ROG Gaming Laptop" class="img asus" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">ASUS ROG Gaming Laptop</h5>
+                        <p class="card-text">Laptop chơi game hiệu năng cao với đồ họa RTX 4070 và màn hình 144Hz.</p>
+                        <p class="product-price">50.390.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="asusrog">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="asusrog" tabindex="0" aria-label="Thêm ASUS ROG Gaming Laptop vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="asusrog" tabindex="0" aria-label="Thêm ASUS ROG Gaming Laptop vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="asusrog" tabindex="0" aria-label="Xem nhanh ASUS ROG Gaming Laptop">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="asusrog" tabindex="0" aria-label="Thêm ASUS ROG Gaming Laptop vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80" alt="Lenovo ThinkPad X1 Carbon Gen 12" class="img lenovo" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Lenovo ThinkPad X1 Carbon Gen 12</h5>
+                        <p class="card-text">Laptop doanh nhân nhẹ với Intel Ultra 9 và màn hình OLED 2.8K.</p>
+                        <p class="product-price">41.990.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="lenovo12">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="lenovo12" tabindex="0" aria-label="Thêm Lenovo ThinkPad X1 Carbon Gen 12 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="lenovo12" tabindex="0" aria-label="Thêm Lenovo ThinkPad X1 Carbon Gen 12 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="lenovo12" tabindex="0" aria-label="Xem nhanh Lenovo ThinkPad X1 Carbon Gen 12">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="lenovo12" tabindex="0" aria-label="Thêm Lenovo ThinkPad X1 Carbon Gen 12 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1611078489935-0cb7bf04a5b8?auto=format&fit=crop&w=800&q=80" alt="HP Spectre x360 14" class="img hp" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">HP Spectre x360 14</h5>
+                        <p class="card-text">Laptop chuyển đổi với Intel thế hệ 13, màn hình OLED 3:2, hỗ trợ bút.</p>
+                        <p class="product-price">44.790.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="hpspectre">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="hpspectre" tabindex="0" aria-label="Thêm HP Spectre x360 14 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="hpspectre" tabindex="0" aria-label="Thêm HP Spectre x360 14 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="hpspectre" tabindex="0" aria-label="Xem nhanh HP Spectre x360 14">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="hpspectre" tabindex="0" aria-label="Thêm HP Spectre x360 14 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Âm thanh -->
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1594631252845-4e8f67f64b4a?auto=format&fit=crop&w=800&q=80" alt="Sony WH-1000XM5" class="img sony" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Sony WH-1000XM5</h5>
+                        <p class="card-text">Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.</p>
+                        <p class="product-price">11.190.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="sonywh">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="sonywh" tabindex="0" aria-label="Thêm Sony WH-1000XM5 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="sonywh" tabindex="0" aria-label="Thêm Sony WH-1000XM5 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="sonywh" tabindex="0" aria-label="Xem nhanh Sony WH-1000XM5">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="sonywh" tabindex="0" aria-label="Thêm Sony WH-1000XM5 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1606220838315-7b7b2b1860cd?auto=format&fit=crop&w=800&q=80" alt="AirPods Pro" class="img airpods" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">AirPods Pro</h5>
+                        <p class="card-text">Âm thanh không gian cá nhân hóa, theo dõi chuyển động đầu, chế độ xuyên âm.</p>
+                        <p class="product-price">6.990.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="airpods">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="airpods" tabindex="0" aria-label="Thêm AirPods Pro vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="airpods" tabindex="0" aria-label="Thêm AirPods Pro vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="airpods" tabindex="0" aria-label="Xem nhanh AirPods Pro">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="airpods" tabindex="0" aria-label="Thêm AirPods Pro vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="HomePod mini" class="img homepod" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">HomePod mini</h5>
+                        <p class="card-text">Loa thông minh nhỏ gọn với âm thanh đầy phòng và trí thông minh Siri.</p>
+                        <p class="product-price">2.790.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="homepod">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="homepod" tabindex="0" aria-label="Thêm HomePod mini vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="homepod" tabindex="0" aria-label="Thêm HomePod mini vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="homepod" tabindex="0" aria-label="Xem nhanh HomePod mini">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="homepod" tabindex="0" aria-label="Thêm HomePod mini vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" alt="Bose QuietComfort Ultra" class="img bose" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Bose QuietComfort Ultra</h5>
+                        <p class="card-text">Tai nghe nhét tai khử tiếng ồn cao cấp với âm thanh sống động.</p>
+                        <p class="product-price">9.790.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="boseultra">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="boseultra" tabindex="0" aria-label="Thêm Bose QuietComfort Ultra vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="boseultra" tabindex="0" aria-label="Thêm Bose QuietComfort Ultra vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="boseultra" tabindex="0" aria-label="Xem nhanh Bose QuietComfort Ultra">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="boseultra" tabindex="0" aria-label="Thêm Bose QuietComfort Ultra vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1589003073299-cbe2d5410f81?auto=format&fit=crop&w=800&q=80" alt="JBL Boombox 3" class="img jbl" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">JBL Boombox 3</h5>
+                        <p class="card-text">Loa di động mạnh mẽ với âm trầm sâu và pin 24 giờ.</p>
+                        <p class="product-price">13.990.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="jblboombox">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="jblboombox" tabindex="0" aria-label="Thêm JBL Boombox 3 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="jblboombox" tabindex="0" aria-label="Thêm JBL Boombox 3 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="jblboombox" tabindex="0" aria-label="Xem nhanh JBL Boombox 3">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="jblboombox" tabindex="0" aria-label="Thêm JBL Boombox 3 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chơi game -->
+                <div class="product-item product-card">
+                    <img src="https://images.pexels.com/photos/614484/pexels-photo-614484.jpeg?auto=format&fit=crop&w=800&q=80" alt="Razer Blade 16" class="img razer" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Razer Blade 16</h5>
+                        <p class="card-text">Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.</p>
+                        <p class="product-price">75.590.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="razerblade">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="razerblade" tabindex="0" aria-label="Thêm Razer Blade 16 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="razerblade" tabindex="0" aria-label="Thêm Razer Blade 16 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="razerblade" tabindex="0" aria-label="Xem nhanh Razer Blade 16">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="razerblade" tabindex="0" aria-label="Thêm Razer Blade 16 vào so sánh">So sánh</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Phụ kiện -->
+                <div class="product-item product-card">
+                    <img src="https://images.unsplash.com/photo-1553546072-7be3a7e78371?auto=format&fit=crop&w=800&q=80" alt="Apple Watch Ultra 2" class="img applewatch" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">Apple Watch Ultra 2</h5>
+                        <p class="card-text">Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.</p>
+                        <p class="product-price">22.390.000 VNĐ</p>
+                        <p class="stock-status text-green-500">Còn hàng</p>
+                        <div class="rating" data-id="applewatch">Đánh giá: 0 ★</div>
+                        <div class="flex flex-col gap-2">
+                            <button class="btn-add-cart add-to-cart" data-id="applewatch" tabindex="0" aria-label="Thêm Apple Watch Ultra 2 vào giỏ hàng">Thêm vào giỏ</button>
+                            <button class="btn bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 add-to-wishlist" data-id="applewatch" tabindex="0" aria-label="Thêm Apple Watch Ultra 2 vào danh sách yêu thích">Yêu thích</button>
+                            <button class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 quick-view" data-id="applewatch" tabindex="0" aria-label="Xem nhanh Apple Watch Ultra 2">Xem nhanh</button>
+                            <button class="btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 compare" data-id="applewatch" tabindex="0" aria-label="Thêm Apple Watch Ultra 2 vào so sánh">So sánh</button>
                         </div>
                     </div>
                 </div>
@@ -103,617 +409,327 @@
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="py-5" id="products">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Điện thoại thông minh mới nhất</h2>
-                <div class="title-divider"></div>
-                <p class="section-subtitle">Khám phá công nghệ điện thoại thông minh tiên tiến với các tính năng đột phá và thiết kế tuyệt đẹp.</p>
-            </div>
-            <div class="row g-4 product-grid">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card product-item">
-                        <div class="img iphone h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">iPhone 15 Pro</h5>
-                            <p class="card-text">iPhone tiên tiến nhất với thiết kế titan, nút Hành động, chip A17 Pro mạnh mẽ.</p>
-                            <div class="product-price">27.990.000 VNĐ</div>
-                            <div class="rating" data-id="iphone15">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="iphone15">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="iphone15">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="iphone15">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Thêm các sản phẩm khác tương tự -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="product-card product-item">
-                        <div class="img samsung h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Samsung Galaxy S24 Ultra</h5>
-                            <p class="card-text">Flagship đỉnh cao với bút S Pen, camera 200MP, tính năng AI hỗ trợ công việc.</p>
-                            <div class="product-price">33.590.000 VNĐ</div>
-                            <div class="rating" data-id="samsung24">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="samsung24">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="samsung24">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="samsung24">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="product-card product-item">
-                        <div class="img pixel h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Google Pixel 8 Pro</h5>
-                            <p class="card-text">Trải nghiệm Android thuần túy với camera AI vượt trội và chip Tensor G3.</p>
-                            <div class="product-price">25.190.000 VNĐ</div>
-                            <div class="rating" data-id="pixel8">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="pixel8">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="pixel8">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="pixel8">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="product-card product-item">
-                        <div class="img oneplus h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">OnePlus 12</h5>
-                            <p class="card-text">Flagship với Snapdragon 8 Gen 3, màn hình AMOLED 120Hz, sạc nhanh 100W.</p>
-                            <div class="product-price">25.190.000 VNĐ</div>
-                            <div class="rating" data-id="oneplus12">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="oneplus12">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="oneplus12">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="oneplus12">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                    <div class="product-card product-item">
-                        <div class="img xiaomi h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Xiaomi 14 Pro</h5>
-                            <p class="card-text">HyperOS, camera Leica, màn hình 144Hz cho hiệu suất tối ưu.</p>
-                            <div class="product-price">27.990.000 VNĐ</div>
-                            <div class="rating" data-id="xiaomi14">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="xiaomi14">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="xiaomi14">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="xiaomi14">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Laptops -->
-            <div class="section-header mt-5" data-aos="fade-up">
-                <h2 class="section-title">Máy tính xách tay cao cấp</h2>
-                <div class="title-divider"></div>
-                <p class="section-subtitle">Máy tính xách tay hiệu năng cao cho công việc, sáng tạo và chơi game.</p>
-            </div>
-            <div class="row g-4 product-grid">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card product-item">
-                        <div class="img macbook h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">MacBook Pro M3</h5>
-                            <p class="card-text">Chip M3 đột phá, màn hình Liquid Retina, hiệu suất cho dân chuyên nghiệp.</p>
-                            <div class="product-price">55.990.000 VNĐ</div>
-                            <div class="rating" data-id="macbookm3">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="macbookm3">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="macbookm3">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="macbookm3">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Thêm các laptop khác tương tự -->
-            </div>
-            <!-- Audio Devices -->
-            <div class="section-header mt-5" data-aos="fade-up">
-                <h2 class="section-title">Âm thanh cao cấp</h2>
-                <div class="title-divider"></div>
-                <p class="section-subtitle">Chất lượng âm thanh tuyệt hảo cho người yêu nhạc và chuyên gia.</p>
-            </div>
-            <div class="row g-4 product-grid">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card product-item">
-                        <div class="img sony h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Sony WH-1000XM5</h5>
-                            <p class="card-text">Tai nghe khử tiếng ồn hàng đầu với chất lượng âm thanh và sự thoải mái tuyệt vời.</p>
-                            <div class="product-price">11.190.000 VNĐ</div>
-                            <div class="rating" data-id="sonywh">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="sonywh">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="sonywh">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="sonywh">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Thêm các sản phẩm âm thanh khác tương tự -->
-            </div>
-            <!-- Gaming -->
-            <div class="section-header mt-5" data-aos="fade-up">
-                <h2 class="section-title">Chơi game</h2>
-                <div class="title-divider"></div>
-                <p class="section-subtitle">Thiết bị chơi game đỉnh cao cho trải nghiệm tuyệt vời.</p>
-            </div>
-            <div class="row g-4 product-grid">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card product-item">
-                        <div class="img razer h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Razer Blade 16</h5>
-                            <p class="card-text">Laptop chơi game với RTX 4090, màn hình Mini-LED 4K, tần số quét 240Hz.</p>
-                            <div class="product-price">75.590.000 VNĐ</div>
-                            <div class="rating" data-id="razerblade">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="razerblade">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="razerblade">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="razerblade">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Accessories -->
-            <div class="section-header mt-5" data-aos="fade-up">
-                <h2 class="section-title">Phụ kiện</h2>
-                <div class="title-divider"></div>
-                <p class="section-subtitle">Phụ kiện công nghệ cao cấp cho mọi nhu cầu.</p>
-            </div>
-            <div class="row g-4 product-grid">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card product-item">
-                        <div class="img applewatch h-64 bg-gray-300"></div>
-                        <div class="card-body">
-                            <h5 class="card-title">Apple Watch Ultra 2</h5>
-                            <p class="card-text">Đồng hồ thông minh bền bỉ với cử chỉ chạm đôi và pin 36 giờ.</p>
-                            <div class="product-price">22.390.000 VNĐ</div>
-                            <div class="rating" data-id="applewatch">Đánh giá: 0 ★</div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-add-cart add-to-cart" data-id="applewatch">Thêm vào giỏ <i class="fas fa-cart-plus ms-2"></i></button>
-                                <button class="btn btn-outline-secondary add-to-wishlist" data-id="applewatch">Yêu thích</button>
-                                <button class="btn btn-outline-secondary quick-view" data-id="applewatch">Xem nhanh</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="categories-section" id="categories">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
+    <section id="categories" class="categories-section py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
                 <h2 class="section-title">Mua sắm theo danh mục</h2>
+                <p class="section-subtitle">Khám phá loạt sản phẩm công nghệ cao cấp theo các danh mục khác nhau</p>
                 <div class="title-divider"></div>
-                <p class="section-subtitle">Khám phá loạt sản phẩm công nghệ cao cấp theo các danh mục khác nhau.</p>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="category-box category-item">
-                        <div class="img iphone h-20 bg-gray-300 mb-3"></div>
-                        <h4>Điện thoại thông minh</h4>
-                        <p class="text-muted">Thiết bị flagship mới nhất</p>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="category-box">
+                    <img src="https://images.unsplash.com/photo-1592899677971-0b06e0a6d2b1?auto=format&fit=crop&w=80&q=80" alt="Điện thoại thông minh" class="img" loading="lazy">
+                    <h4>Điện thoại thông minh</h4>
+                    <p>Thiết bị flagship mới nhất</p>
                 </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="category-box category-item">
-                        <div class="img macbook h-20 bg-gray-300 mb-3"></div>
-                        <h4>Máy tính xách tay</h4>
-                        <p class="text-muted">Máy tính hiệu năng cao</p>
-                    </div>
+                <div class="category-box">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=80&q=80" alt="Máy tính xách tay" class="img" loading="lazy">
+                    <h4>Máy tính xách tay</h4>
+                    <p>Máy tính hiệu năng cao</p>
                 </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="category-box category-item">
-                        <div class="img speaker h-20 bg-gray-300 mb-3"></div>
-                        <h4>Âm thanh</h4>
-                        <p class="text-muted">Trải nghiệm âm thanh cao cấp</p>
-                    </div>
+                <div class="category-box">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=80&q=80" alt="Âm thanh" class="img" loading="lazy">
+                    <h4>Âm thanh</h4>
+                    <p>Trải nghiệm âm thanh cao cấp</p>
                 </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="category-box category-item">
-                        <div class="img razer h-20 bg-gray-300 mb-3"></div>
-                        <h4>Chơi game</h4>
-                        <p class="text-muted">Thiết bị chơi game đỉnh cao</p>
-                    </div>
+                <div class="category-box">
+                    <img src="https://images.pexels.com/photos/614484/pexels-photo-614484.jpeg?auto=format&fit=crop&w=80&q=80" alt="Chơi game" class="img" loading="lazy">
+                    <h4>Chơi game</h4>
+                    <p>Thiết bị chơi game đỉnh cao</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section" id="about">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
+    <section id="about" class="about-section py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
                 <h2 class="section-title">Tại sao chọn Hot Gadgets</h2>
+                <p class="section-subtitle">Chúng tôi cam kết mang đến công nghệ tiên tiến nhất với dịch vụ tuyệt vời</p>
                 <div class="title-divider"></div>
-                <p class="section-subtitle">Chúng tôi cam kết mang đến công nghệ tiên tiến nhất với dịch vụ tuyệt vời.</p>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-box feature-item">
-                        <i class="fas fa-shipping-fast"></i>
-                        <h4>Giao hàng nhanh</h4>
-                        <p class="text-muted">Miễn phí giao hàng nhanh cho đơn hàng trên 14.000.000 VNĐ. Nhận hàng trong 1-2 ngày làm việc.</p>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="feature-box">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h4>Giao hàng nhanh</h4>
+                    <p>Miễn phí giao hàng nhanh cho đơn hàng trên 14.000.000 VNĐ. Nhận hàng trong 1-2 ngày làm việc.</p>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-box feature-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>Bảo hành mở rộng</h4>
-                        <p class="text-muted">Bảo hành mở rộng cho tất cả sản phẩm với dịch vụ thay thế và sửa chữa dễ dàng.</p>
-                    </div>
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Bảo hành mở rộng</h4>
+                    <p>Bảo hành mở rộng cho tất cả sản phẩm với dịch vụ thay thế và sửa chữa dễ dàng.</p>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-box feature-item">
-                        <i class="fas fa-headset"></i>
-                        <h4>Hỗ trợ 24/7</h4>
-                        <p class="text-muted">Hỗ trợ khách hàng liên tục để giải đáp mọi thắc mắc hoặc vấn đề kỹ thuật.</p>
-                    </div>
+                <div class="feature-box">
+                    <i class="fas fa-headset"></i>
+                    <h4>Hỗ trợ 24/7</h4>
+                    <p>Hỗ trợ khách hàng liên tục để giải đáp mọi thắc mắc hoặc vấn đề kỹ thuật.</p>
                 </div>
             </div>
-            <div class="stats-section" data-aos="fade-up">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number" data-target="10000">0</div>
-                            <div class="stat-label">Khách hàng hài lòng</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number" data-target="50000">0</div>
-                            <div class="stat-label">Sản phẩm đã bán</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number" data-target="5">0</div>
-                            <div class="stat-label">Năm kinh nghiệm</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number" data-target="98">0</div>
-                            <div class="stat-label">Tỷ lệ hài lòng</div>
-                        </div>
-                    </div>
+            <div class="stats-section mt-16 grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="stat-item">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Khách hàng hài lòng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50,000+</div>
+                    <div class="stat-label">Sản phẩm đã bán</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Năm kinh nghiệm</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Tỷ lệ hài lòng</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter-section" id="contact">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center" data-aos="fade-up">
-                    <h2 class="section-title text-white">Cập nhật tin tức</h2>
-                    <p class="section-subtitle text-white-50 mb-4">Đăng ký nhận bản tin để biết về sản phẩm mới, ưu đãi độc quyền, và tin tức công nghệ.</p>
-                    <form class="newsletter-form" id="newsletter-form">
-                        <div class="input-group">
-                            <input type="email" class="newsletter-input" placeholder="Nhập địa chỉ email của bạn" id="newsletterEmail">
-                            <button class="btn btn-primary-custom mt-3" type="submit">Đăng ký <i class="fas fa-paper-plane ms-2"></i></button>
+    <section id="contact" class="contact-section py-16">
+        <div class="container mx-auto px-4">
+            <div class="section-header">
+                <h2 class="section-title">Liên hệ với chúng tôi</h2>
+                <p class="section-subtitle">Hãy liên hệ để nhận hỗ trợ hoặc giải đáp thắc mắc</p>
+                <div class="title-divider"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4>Thông tin liên hệ</h4>
+                    <p>Email: support@hotgadgets.vn</p>
+                    <p>Số điện thoại: 1800-123-456</p>
+                    <p>Địa chỉ: 123 Đường Công Nghệ, TP. Hồ Chí Minh, Việt Nam</p>
+                </div>
+                <div>
+                    <form id="contact-form">
+                        <div class="form-group mb-4">
+                            <label for="contact-name">Họ và tên</label>
+                            <input type="text" id="contact-name" class="w-full p-2 border rounded" required tabindex="0">
                         </div>
+                        <div class="form-group mb-4">
+                            <label for="contact-email">Email</label>
+                            <input type="email" id="contact-email" class="w-full p-2 border rounded" required tabindex="0">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="contact-message">Tin nhắn</label>
+                            <textarea id="contact-message" class="w-full p-2 border rounded" rows="4" required tabindex="0"></textarea>
+                        </div>
+                        <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" tabindex="0">Gửi</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-section">
-                        <h5><i class="fas fa-mobile-alt me-2"></i>Hot Gadgets</h5>
-                        <p class="text-white-50">Điểm đến hàng đầu cho các sản phẩm công nghệ tiên tiến với chất lượng và dịch vụ vượt trội.</p>
-                        <div class="social-links">
-                            <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-section">
-                        <h5>Liên kết nhanh</h5>
-                        <ul>
-                            <li><a href="#home">Trang chủ</a></li>
-                            <li><a href="#products">Sản phẩm</a></li>
-                            <li><a href="#categories">Danh mục</a></li>
-                            <li><a href="#about">Giới thiệu</a></li>
-                            <li><a href="#contact">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-section">
-                        <h5>Danh mục</h5>
-                        <ul>
-                            <li><a href="#">Điện thoại thông minh</a></li>
-                            <li><a href="#">Máy tính xách tay</a></li>
-                            <li><a href="#">Âm thanh</a></li>
-                            <li><a href="#">Chơi game</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-section">
-                        <h5>Hỗ trợ</h5>
-                        <ul>
-                            <li><a href="#">Trung tâm trợ giúp</a></li>
-                            <li><a href="#">Thông tin giao hàng</a></li>
-                            <li><a href="#">Đổi trả</a></li>
-                            <li><a href="#">Bảo hành</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-section">
-                        <h5>Pháp lý</h5>
-                        <ul>
-                            <li><a href="#">Chính sách bảo mật</a></li>
-                            <li><a href="#">Điều khoản dịch vụ</a></li>
-                            <li><a href="#">Chính sách cookie</a></li>
-                            <li><a href="#">Tuyên bố miễn trừ trách nhiệm</a></li>
-                        </ul>
-                    </div>
+    <section class="newsletter-section py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-4">Cập nhật tin tức</h2>
+            <p class="mb-6">Đăng ký nhận bản tin để biết về sản phẩm mới, ưu đãi độc quyền, và tin tức công nghệ.</p>
+            <form id="newsletter-form" class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Nhập email của bạn" required tabindex="0">
+                <button type="submit" class="btn-primary-custom mt-4" tabindex="0">Đăng ký</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div class="footer-section">
+                <h5>Hot Gadgets</h5>
+                <p>Điểm đến hàng đầu cho các sản phẩm công nghệ tiên tiến với chất lượng và dịch vụ vượt trội.</p>
+                <div class="social-links flex space-x-2">
+                    <a href="#" class="social-icon facebook" aria-label="Facebook"></a>
+                    <a href="#" class="social-icon twitter" aria-label="Twitter"></a>
+                    <a href="#" class="social-icon instagram" aria-label="Instagram"></a>
+                    <a href="#" class="social-icon linkedin" aria-label="LinkedIn"></a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>© 2024 Hot Gadgets. Mọi quyền được bảo lưu. | Thiết kế với ❤️ cho người yêu công nghệ</p>
+            <div class="footer-section">
+                <h5>Liên kết nhanh</h5>
+                <ul>
+                    <li><a href="#" tabindex="0">Trang chủ</a></li>
+                    <li><a href="#products" tabindex="0">Sản phẩm</a></li>
+                    <li><a href="#categories" tabindex="0">Danh mục</a></li>
+                    <li><a href="#about" tabindex="0">Giới thiệu</a></li>
+                    <li><a href="#contact" tabindex="0">Liên hệ</a></li>
+                </ul>
             </div>
+            <div class="footer-section">
+                <h5>Danh mục</h5>
+                <ul>
+                    <li><a href="#products" tabindex="0">Điện thoại thông minh</a></li>
+                    <li><a href="#products" tabindex="0">Máy tính xách tay</a></li>
+                    <li><a href="#products" tabindex="0">Âm thanh</a></li>
+                    <li><a href="#products" tabindex="0">Chơi game</a></li>
+                    <li><a href="#products" tabindex="0">Phụ kiện</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h5>Hỗ trợ</h5>
+                <ul>
+                    <li><a href="#contact" tabindex="0">Trung tâm trợ giúp</a></li>
+                    <li><a href="#contact" tabindex="0">Thông tin giao hàng</a></li>
+                    <li><a href="#contact" tabindex="0">Đổi trả</a></li>
+                    <li><a href="#contact" tabindex="0">Bảo hành</a></li>
+                    <li><a href="#contact" tabindex="0">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h5>Pháp lý</h5>
+                <ul>
+                    <li><a href="#contact" tabindex="0">Chính sách bảo mật</a></li>
+                    <li><a href="#contact" tabindex="0">Điều khoản dịch vụ</a></li>
+                    <li><a href="#contact" tabindex="0">Chính sách cookie</a></li>
+                    <li><a href="#contact" tabindex="0">Tuyên bố miễn trừ trách nhiệm</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom mt-8 text-center">
+            <p>© 2025 Hot Gadgets. Mọi quyền được bảo lưu. | Thiết kế với ❤️ cho người yêu công nghệ</p>
         </div>
     </footer>
 
-    <!-- Shopping Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-    <div class="cart-sidebar cart-modal" id="cartSidebar">
-        <div class="cart-header">
-            <h4><i class="fas fa-shopping-cart me-2"></i>Giỏ hàng</h4>
-            <button class="btn-close close" onclick="toggleCart()">×</button>
-        </div>
-        <div class="cart-content"></div>
-        <div class="cart-footer p-3 border-top">
-            <div class="d-flex justify-content-between mb-3">
-                <strong>Tổng cộng: <span class="cart-total">0 VNĐ</span></strong>
+    <div class="cart-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Giỏ hàng">
+        <div class="cart-sidebar bg-white p-6 rounded-lg w-full max-w-md">
+            <div class="cart-header flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Giỏ hàng</h3>
+                <span class="close cursor-pointer text-2xl" aria-label="Đóng giỏ hàng">&times;</span>
             </div>
-            <button class="btn btn-primary w-100 mb-2 checkout">Thanh toán <i class="fas fa-credit-card ms-2"></i></button>
-            <button class="btn btn-outline-secondary w-100 clear-cart">Xóa giỏ hàng <i class="fas fa-trash ms-2"></i></button>
+            <div class="cart-content"></div>
+            <div class="cart-total font-bold mt-4">Tổng cộng: 0 VNĐ</div>
+            <button class="checkout btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4 w-full" tabindex="0">Thanh toán</button>
+            <button class="clear-cart btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-2 w-full" tabindex="0">Xóa giỏ hàng</button>
         </div>
     </div>
 
-    <!-- Wishlist Modal -->
-    <div class="modal fade wishlist-modal" id="wishlistModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h4 class="modal-title">Danh sách yêu thích</h4>
-                    <button type="button" class="btn-close close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="wishlist-content"></div>
-                    <button class="btn btn-outline-secondary w-100 clear-wishlist">Xóa danh sách yêu thích</button>
-                </div>
+    <div class="wishlist-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Danh sách yêu thích">
+        <div class="bg-white p-6 rounded-lg w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Danh sách yêu thích</h3>
+                <span class="close cursor-pointer text-2xl" aria-label="Đóng danh sách yêu thích">&times;</span>
             </div>
+            <div class="wishlist-content"></div>
+            <button class="clear-wishlist btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-4 w-full" tabindex="0">Xóa danh sách yêu thích</button>
         </div>
     </div>
 
-    <!-- Auth Modal -->
-    <div class="modal fade auth-modal" id="authModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div "¿modal-content">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="auth-tabs text-center">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="auth-tab active tab" data-tab="signin" id="loginTab">Đăng nhập</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="auth-tab tab" data-tab="signup" id="registerTab">Đăng ký</div>
-                            </div>
-                        </div>
+    <div class="auth-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Đăng nhập/Đăng ký">
+        <div class="modal-content bg-white p-6 rounded-lg w-full max-w-md">
+            <span class="close cursor-pointer text-2xl float-right" aria-label="Đóng đăng nhập/đăng ký">&times;</span>
+            <div class="auth-tabs flex border-b mb-4">
+                <button class="auth-tab tab px-4 py-2 flex-1 text-center border-b-2 border-blue-500" data-tab="signin" tabindex="0">Đăng nhập</button>
+                <button class="auth-tab tab px-4 py-2 flex-1 text-center" data-tab="signup" tabindex="0">Đăng ký</button>
+            </div>
+            <div class="auth-form signin-form">
+                <h3 class="text-xl font-bold mb-4">Chào mừng trở lại!</h3>
+                <form id="signin-form">
+                    <div class="form-group mb-4">
+                        <label for="signin-email">Địa chỉ email</label>
+                        <input type="email" id="signin-email" class="w-full p-2 border rounded" required tabindex="0">
                     </div>
-                    <div class="auth-form active signin-form" id="signin-form">
-                        <h3 class="text-center mb-4">Chào mừng trở lại!</h3>
-                        <div class="form-group">
-                            <label for="loginEmail">Địa chỉ email</label>
-                            <input type="email" id="loginEmail" class="form-control" placeholder="Nhập email của bạn">
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword">Mật khẩu</label>
-                            <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu của bạn">
-                        </div>
-                        <button class="btn btn-primary w-100 mb-3" type="submit">Đăng nhập <i class="fas fa-sign-in-alt ms-2"></i></button>
-                        <p class="text-center text-muted">
-                            <a href="#" class="text-primary">Quên mật khẩu?</a>
-                        </p>
+                    <div class="form-group mb-4">
+                        <label for="signin-password">Mật khẩu</label>
+                        <input type="password" id="signin-password" class="w-full p-2 border rounded" required tabindex="0">
                     </div>
-                    <div class="auth-form signup-form" id="signup-form">
-                        <h3 class="text-center mb-4">Tạo tài khoản</h3>
-                        <div class="form-group">
-                            <label for="registerName">Họ và tên</label>
-                            <input type="text" id="registerName" class="form-control" placeholder="Nhập họ và tên">
-                        </div>
-                        <div class="form-group">
-                            <label for="registerEmail">Địa chỉ email</label>
-                            <input type="email" id="registerEmail" class="form-control" placeholder="Nhập email của bạn">
-                        </div>
-                        <div class="form-group">
-                            <label for="registerPassword">Mật khẩu</label>
-                            <input type="password" id="registerPassword" class="form-control" placeholder="Tạo mật khẩu">
-                        </div>
-                        <div class="form-group">
-                            <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
-                            <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Xác nhận mật khẩu">
-                        </div>
-                        <button class="btn btn-primary w-100 mb-3" type="submit">Tạo tài khoản <i class="fas fa-user-plus ms-2"></i></button>
+                    <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full" tabindex="0">Đăng nhập</button>
+                    <a href="#" class="text-blue-500 mt-2 inline-block" tabindex="0">Quên mật khẩu?</a>
+                </form>
+            </div>
+            <div class="auth-form signup-form hidden">
+                <h3 class="text-xl font-bold mb-4">Tạo tài khoản</h3>
+                <form id="signup-form">
+                    <div class="form-group mb-4">
+                        <label for="signup-name">Họ và tên</label>
+                        <input type="text" id="signup-name" class="w-full p-2 border rounded" required tabindex="0">
                     </div>
-                </div>
+                    <div class="form-group mb-4">
+                        <label for="signup-email">Địa chỉ email</label>
+                        <input type="email" id="signup-email" class="w-full p-2 border rounded" required tabindex="0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="signup-password">Mật khẩu</label>
+                        <input type="password" id="signup-password" class="w-full p-2 border rounded" required tabindex="0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="signup-confirm-password">Xác nhận mật khẩu</label>
+                        <input type="password" id="signup-confirm-password" class="w-full p-2 border rounded" required tabindex="0">
+                    </div>
+                    <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full" tabindex="0">Tạo tài khoản</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Quick View Modal -->
-    <div class="modal fade quick-view-modal" id="quickViewModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body quick-view-content"></div>
-            </div>
+    <div class="quick-view-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Xem nhanh sản phẩm">
+        <div class="modal-content bg-white p-6 rounded-lg w-full max-w-md">
+            <span class="close cursor-pointer text-2xl float-right" aria-label="Đóng xem nhanh">&times;</span>
+            <div class="quick-view-content"></div>
         </div>
     </div>
 
-    <!-- Compare Modal -->
-    <div class="modal fade compare-modal" id="compareModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h4 class="modal-title">So sánh sản phẩm</h4>
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body compare-content"></div>
-                <div class="modal-footer border-0">
-                    <button class="btn btn-outline-secondary w-100 clear-compare">Xóa so sánh</button>
-                </div>
-            </div>
+    <div class="compare-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="So sánh sản phẩm">
+        <div class="modal-content bg-white p-6 rounded-lg w-full max-w-4xl">
+            <span class="close cursor-pointer text-2xl float-right" aria-label="Đóng so sánh">&times;</span>
+            <h3 class="text-xl font-bold mb-4">So sánh sản phẩm</h3>
+            <div class="compare-content"></div>
+            <button class="clear-compare btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-4 w-full" tabindex="0">Xóa so sánh</button>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div class="modal fade checkout-modal" id="checkoutModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h4 class="modal-title">Thanh toán</h4>
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
+    <div class="checkout-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Thanh toán">
+        <div class="modal-content bg-white p-6 rounded-lg w-full max-w-md">
+            <span class="close cursor-pointer text-2xl float-right" aria-label="Đóng thanh toán">&times;</span>
+            <h3 class="text-xl font-bold mb-4">Thanh toán</h3>
+            <form id="checkout-form">
+                <div class="form-group mb-4">
+                    <label for="checkout-name">Họ và tên</label>
+                    <input type="text" id="checkout-name" class="w-full p-2 border rounded" required tabindex="0">
                 </div>
-                <div class="modal-body">
-                    <form id="checkout-form">
-                        <div class="form-group">
-                            <label for="fullName">Họ và tên</label>
-                            <input type="text" id="fullName" class="form-control" placeholder="Nhập họ và tên">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="Nhập email">
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Địa chỉ</label>
-                            <input type="text" id="address" class="form-control" placeholder="Nhập địa chỉ">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Số điện thoại</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="Nhập số điện thoại">
-                        </div>
-                        <button class="btn btn-primary w-100" type="submit">Hoàn tất thanh toán <i class="fas fa-credit-card ms-2"></i></button>
-                    </form>
+                <div class="form-group mb-4">
+                    <label for="checkout-email">Email</label>
+                    <input type="email" id="checkout-email" class="w-full p-2 border rounded" required tabindex="0">
                 </div>
-            </div>
+                <div class="form-group mb-4">
+                    <label for="checkout-address">Địa chỉ</label>
+                    <input type="text" id="checkout-address" class="w-full p-2 border rounded" required tabindex="0">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="checkout-phone">Số điện thoại</label>
+                    <input type="tel" id="checkout-phone" class="w-full p-2 border rounded" required tabindex="0">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="checkout-payment">Phương thức thanh toán</label>
+                    <select id="checkout-payment" class="w-full p-2 border rounded" required tabindex="0">
+                        <option value="cod">Thanh toán khi nhận hàng</option>
+                        <option value="card">Thẻ tín dụng</option>
+                        <option value="bank">Chuyển khoản ngân hàng</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full" tabindex="0">Hoàn tất thanh toán</button>
+            </form>
         </div>
     </div>
 
-    <!-- Rating Modal -->
-    <div class="modal fade rating-modal" id="ratingModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h4 class="modal-title">Đánh giá sản phẩm</h4>
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
+    <div class="rating-modal modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" tabindex="-1" aria-label="Đánh giá sản phẩm">
+        <div class="modal-content bg-white p-6 rounded-lg w-full max-w-md">
+            <span class="close cursor-pointer text-2xl float-right" aria-label="Đóng đánh giá">&times;</span>
+            <h3 class="text-xl font-bold mb-4">Đánh giá sản phẩm</h3>
+            <form id="rating-form">
+                <div class="flex mb-4">
+                    <span class="star" data-value="1" tabindex="0" aria-label="1 sao">★</span>
+                    <span class="star" data-value="2" tabindex="0" aria-label="2 sao">★</span>
+                    <span class="star" data-value="3" tabindex="0" aria-label="3 sao">★</span>
+                    <span class="star" data-value="4" tabindex="0" aria-label="4 sao">★</span>
+                    <span class="star" data-value="5" tabindex="0" aria-label="5 sao">★</span>
                 </div>
-                <div class="modal-body">
-                    <form id="rating-form">
-                        <div class="stars mb-3">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="Viết nhận xét của bạn..." rows="4"></textarea>
-                        </div>
-                        <button class="btn btn-primary w-100" type="submit">Gửi đánh giá <i class="fas fa-star ms-2"></i></button>
-                    </form>
+                <div class="form-group mb-4">
+                    <textarea class="w-full p-2 border rounded" placeholder="Nhập bình luận của bạn..." tabindex="0"></textarea>
                 </div>
-            </div>
+                <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full" tabindex="0">Gửi đánh giá</button>
+            </form>
         </div>
     </div>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS Animation JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Swiper JS -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <!-- Toastify JS -->
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="script.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('open');
-            document.getElementById('cartOverlay').classList.toggle('show');
-        }
-
-        window.addEventListener('scroll', function() {
-            const backToTop = document.getElementById('backToTop');
-            backToTop.classList.toggle('show', window.pageYOffset > 300);
-            const navbar = document.querySelector('.navbar');
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
